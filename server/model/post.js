@@ -9,7 +9,7 @@ const postSchema = new Schema({
   },
   caption: {
     type: String,
-    maxLength: [258, "Caption should not be greater than 258 characters"],
+    maxLength: [280, "Caption should not be greater than 280 characters"],
   },
   imageUrl: {
     id: {
@@ -23,13 +23,14 @@ const postSchema = new Schema({
       },
     },
   },
-  LikeCount: {
-    type: Number,
-    default: 0,
-  },
-  CommentCount: {
-    type: Number,
-    default: 0,
+  likesId: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
+  ],
+  updatedAt: {
+    type: Date,
   },
   createdAt: {
     type: Date,

@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
@@ -25,18 +29,17 @@ const userSchema = new Schema({
     required: [true, "Please provide a password"],
     minLength: [8, "Password should be 8 or more character"],
   },
-  displayPicture: {
+  profilePic: {
     id: {
       type: String,
-      required: true,
     },
-    photo: {
+    imageUrl: {
       type: String,
       default:
         "https://res.cloudinary.com/diqgskxvi/image/upload/v1694346301/ConnectX/2048px-Windows_10_Default_Profile_Picture.svg_osfygk.png",
     },
   },
-
+  bio: String,
   following: [
     {
       type: mongoose.Schema.ObjectId,
@@ -56,5 +59,36 @@ const userSchema = new Schema({
     default: Date.now,
   },
 });
+
+// save the password in hash before saving the user
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+// method is created to compare password
+userSchema.methods.isPasswordMatch = async (userPassword) => {
+  return await bcrypt.compare(userPassword, this.password);
+};
+
+userSchema.methods.getjwtToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRY,
+  });
+};
+
+userSchema.methods.getForgotToken = function () {
+  const forgotToken = crypto.randomBytes(20).toString("hex");
+
+  this.forgotPasswordToken = crypto
+    .createHash("sha256")
+    .update(forgotToken)
+    .digest("hex");
+
+  this.forgotPasswordExpiry = Date.now() + process.env.TOKEN_EXPIRY;
+
+  return forgotToken;
+};
 
 module.exports = model("User", userSchema);
