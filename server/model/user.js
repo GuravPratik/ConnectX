@@ -28,6 +28,7 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Please provide a password"],
     minLength: [8, "Password should be 8 or more character"],
+    select: false,
   },
   profilePic: {
     id: {
@@ -68,7 +69,7 @@ userSchema.pre("save", async function (next) {
 });
 
 // method is created to compare password
-userSchema.methods.isPasswordMatch = async (userPassword) => {
+userSchema.methods.isPasswordMatch = async function (userPassword) {
   return await bcrypt.compare(userPassword, this.password);
 };
 

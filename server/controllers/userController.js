@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 const User = require("../model/user");
 
+const cookieToken = require("../utils/cookieToken");
+
 exports.signUp = async (req, res) => {
   const { userName, fullName, email, password } = req.body;
 
@@ -39,7 +41,7 @@ exports.signUp = async (req, res) => {
     });
     res.json({
       message: "user is successfully created",
-      status: "success",
+      success: true,
       createdUser,
     });
   } catch (error) {
@@ -62,4 +64,51 @@ exports.signUp = async (req, res) => {
         .json({ error: "An error occurred while creating the user." });
     }
   }
+};
+
+exports.login = async (req, res) => {
+  const { userName, password } = req.body;
+
+  if (!(userName && password)) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide userName and password",
+    });
+  }
+
+  try {
+    const user = await User.findOne({ userName }).select("+password");
+    if (!user) {
+      return res.status(403).json({
+        message: "User not found ! Please first Sign up",
+      });
+    }
+    const isPasswordMatch = await user.isPasswordMatch(password);
+    if (!isPasswordMatch) {
+      return res.status(403).json({
+        message: "Password does not match! Please enter correct password",
+        success: false,
+      });
+    }
+    // if password match send success response with user deatils and also set cookies in the cookie
+    cookieToken(user, res);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error while login! Please try again after some time",
+      success: false,
+    });
+  }
+};
+
+exports.logout = async (req, res) => {
+  res
+    .cookie("Token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    })
+    .status(200)
+    .json({
+      success: true,
+      message: "Logout successfully",
+    });
 };
