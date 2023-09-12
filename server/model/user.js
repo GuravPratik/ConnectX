@@ -79,7 +79,7 @@ userSchema.methods.getjwtToken = function () {
   });
 };
 
-userSchema.methods.getForgotToken = function () {
+userSchema.methods.getForgotPasswordToken = function () {
   const forgotToken = crypto.randomBytes(20).toString("hex");
 
   this.forgotPasswordToken = crypto
@@ -87,7 +87,7 @@ userSchema.methods.getForgotToken = function () {
     .update(forgotToken)
     .digest("hex");
 
-  this.forgotPasswordExpiry = Date.now() + process.env.TOKEN_EXPIRY;
+  this.forgotPasswordExpiry = Date.now() + 20 * 60 * 1000;
 
   return forgotToken;
 };
