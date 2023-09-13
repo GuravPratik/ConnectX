@@ -207,3 +207,58 @@ exports.resetPassword = async (req, res) => {
     });
   }
 };
+
+exports.updateUserDetails = async (req, res) => {
+  const updateData = {};
+  try {
+    if (req.body.fullName) {
+      updateData.fullName = req.body.fullName;
+    }
+
+    if (req.body.bio) {
+      updateData.bio = req.body.bio;
+    }
+
+    if (req.files) {
+      const previousProfilePic = req.user.profilePic.id;
+      if (previousProfilePic) {
+        await cloudinary.uploader.destroy(previousProfilePic);
+      }
+
+      // update the new image
+
+      const newProfilePic = req.files.avatar;
+
+      const result = await cloudinary.uploader.upload(
+        newProfilePic.tempFilePath,
+        {
+          folder: "ConnectX/Users",
+          width: 150,
+          crop: "scale",
+        }
+      );
+
+      updateData.profilePic = {
+        id: result.public_id,
+        imageUrl: result.secure_url,
+      };
+    }
+
+    // update user
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
+
+    res.status(200).json({
+      success: true,
+      message: "User info is updated successfully",
+      updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
