@@ -262,3 +262,39 @@ exports.updateUserDetails = async (req, res) => {
     });
   }
 };
+
+exports.updatePassword = async (req, res) => {
+  const userId = req.user.id;
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const user = await User.findById(userId).select("+password");
+    const isOldPasswordMatch = await user.isPasswordMatch(oldPassword);
+    if (!isOldPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Please enter correct old Password",
+      });
+    }
+    // update password with new password
+    user.password = newPassword;
+
+    await user.save();
+
+    cookieToken(user, res);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+exports.getLoggedInUserDetails = async (req, res) => {
+  const user = await User.findById(req.user.id).select("-password");
+  res.status(200).json({
+    success: true,
+    user,
+  });
+};
