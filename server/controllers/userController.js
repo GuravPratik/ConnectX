@@ -298,3 +298,85 @@ exports.getLoggedInUserDetails = async (req, res) => {
     user,
   });
 };
+
+exports.follow = async (req, res) => {
+  try {
+    // get current logged in user
+    const userId = req.user.id;
+    // get the id of the user to follow
+    const { followUserId } = req.body;
+
+    // update current logged in user following field
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { following: followUserId },
+      },
+      {
+        new: true,
+      }
+    );
+
+    // update the follow user follwers field
+    await User.findByIdAndUpdate(
+      followUserId,
+      {
+        $push: { followers: userId },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Follow successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.unfollow = async (req, res) => {
+  try {
+    // get current logged in user
+    const userId = req.user.id;
+    // get the id of the user to follow
+    const { unFollowUserId } = req.body;
+
+    // update current logged in user following field
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { following: unFollowUserId },
+      },
+      {
+        new: true,
+      }
+    );
+
+    // update the follow user follwers field
+    await User.findByIdAndUpdate(
+      unFollowUserId,
+      {
+        $pull: { followers: userId },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "unfollow successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
