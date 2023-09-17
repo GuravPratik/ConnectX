@@ -306,22 +306,39 @@ exports.follow = async (req, res) => {
     // get the id of the user to follow
     const { followUserId } = req.body;
 
+    // get username fullName and id of the follow user
+    const followUser = await User.findById(followUserId).select(
+      "id userName fullName"
+    );
+
+    const followingObj = {
+      userId: followUserId,
+      userName: followUser.userName,
+      fullName: followUser.fullName,
+    };
+
     // update current logged in user following field
-    await User.findByIdAndUpdate(
+    const currentUser = await User.findByIdAndUpdate(
       userId,
       {
-        $push: { following: followUserId },
+        $push: { followings: followingObj },
       },
       {
         new: true,
       }
     );
 
+    const followerObj = {
+      userId: userId,
+      userName: currentUser.userName,
+      fullName: currentUser.fullName,
+    };
+
     // update the follow user follwers field
     await User.findByIdAndUpdate(
       followUserId,
       {
-        $push: { followers: userId },
+        $push: { followers: followerObj },
       },
       {
         new: true,
@@ -331,6 +348,7 @@ exports.follow = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Follow successfully",
+      currentUser,
     });
   } catch (error) {
     console.log(error);
@@ -351,7 +369,7 @@ exports.unfollow = async (req, res) => {
     await User.findByIdAndUpdate(
       userId,
       {
-        $pull: { following: unFollowUserId },
+        $pull: { followings: { userId: unFollowUserId } },
       },
       {
         new: true,
@@ -362,7 +380,7 @@ exports.unfollow = async (req, res) => {
     await User.findByIdAndUpdate(
       unFollowUserId,
       {
-        $pull: { followers: userId },
+        $pull: { followers: { userId: userId } },
       },
       {
         new: true,
@@ -372,6 +390,32 @@ exports.unfollow = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "unfollow successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+exports.getUserById = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const user = await User.findById(id).select("-password -email ");
+
+    if (user) {
+      res.status(200).json({
+        user,
+        message: "user fetch successfully",
+        success: true,
+      });
+      return;
+    }
+
+    res.status(200).json({
+      message: "User not found",
+      success: false,
     });
   } catch (error) {
     console.log(error);

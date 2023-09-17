@@ -6,6 +6,15 @@ const crypto = require("crypto");
 
 const { Schema, model } = mongoose;
 
+const followerSchema = new Schema({
+  userId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+  },
+  fullName: String,
+  userName: String,
+});
+
 const userSchema = new Schema({
   userName: {
     type: String,
@@ -41,18 +50,8 @@ const userSchema = new Schema({
     },
   },
   bio: String,
-  following: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
-  followers: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-    },
-  ],
+  followings: [followerSchema],
+  followers: [followerSchema],
   forgotPasswordToken: String,
   forgotPasswordExpiry: Date,
   createdAt: {

@@ -10,6 +10,7 @@ const {
   getLoggedInUserDetails,
   follow,
   unfollow,
+  getUserById,
 } = require("../controllers/userController");
 const { isLoggedIn } = require("../middlewares/auth");
 const router = express.Router();
@@ -25,4 +26,6 @@ router.route("/user").get(isLoggedIn, getLoggedInUserDetails);
 
 router.route("/follow").patch(isLoggedIn, follow);
 router.route("/unfollow").patch(isLoggedIn, unfollow);
+
+router.route("/user/details").get(getUserById);
 module.exports = router;
