@@ -11,22 +11,21 @@ const postSchema = new Schema({
     type: String,
     maxLength: [280, "Caption should not be greater than 280 characters"],
   },
-  imageUrl: {
+  imageInfo: {
     id: {
-      id: {
-        type: String,
-        required: true,
-      },
-      photo: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: true,
+    },
+    secureUrl: {
+      type: String,
+      required: true,
     },
   },
   likesId: [
     {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
+      userId: { type: mongoose.Schema.ObjectId, ref: "User" },
+      userName: String,
+      fullName: String,
     },
   ],
   updatedAt: {
