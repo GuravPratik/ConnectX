@@ -37,4 +37,8 @@ const postSchema = new Schema({
   },
 });
 
+postSchema.methods.matchUser = function (userId) {
+  return this.userId.equals(userId);
+};
+
 module.exports = model("Post", postSchema);

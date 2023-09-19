@@ -1,10 +1,8 @@
 const Post = require("../model/post");
 const User = require("../model/user");
-const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 
 exports.getPost = async (req, res) => {
-  console.log(req.user.id);
   try {
     const posts = await Post.find();
     res.json({
@@ -73,6 +71,49 @@ exports.createPost = async (req, res) => {
   }
 };
 
+exports.updatePost = async (req, res) => {
+  try {
+    if (!req.body.caption) {
+      return res.status(400).json({
+        message: "Please enter caption to update the post",
+        success: false,
+      });
+    }
+
+    // get post id
+    const post = await Post.findById(req.params.postId);
+    // get user id
+    // fetch post and check if the user is the owner of the post or not
+
+    const matchUser = await post.matchUser(req.user.id);
+
+    if (!matchUser) {
+      return res.status(401).json({
+        message: `You don't have an authority to update the post!`,
+        success: false,
+      });
+    }
+    // update the post captions and change the updated at
+
+    post.caption = req.body.caption;
+    post.updatedAt = Date.now();
+    const updatedPost = await post.save();
+
+    // send res
+
+    res.status(200).json({
+      message: "Post updated successfully",
+      success: true,
+      updatedPost,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
 exports.deletePost = async (req, res) => {
   try {
     // get the postid
@@ -85,6 +126,15 @@ exports.deletePost = async (req, res) => {
     if (!post) {
       return res.status(404).json({
         message: "Post not found",
+        success: false,
+      });
+    }
+    // check if user who trying to delete the post is match or not
+    const userMatch = await post.matchUser(req.user.id);
+
+    if (!userMatch) {
+      return res.status(401).json({
+        message: `You don't have an authority to delete the post!`,
         success: false,
       });
     }
