@@ -80,10 +80,7 @@ exports.updatePost = async (req, res) => {
       });
     }
 
-    // get post id
     const post = await Post.findById(req.params.postId);
-    // get user id
-    // fetch post and check if the user is the owner of the post or not
 
     const matchUser = await post.matchUser(req.user.id);
 
@@ -93,13 +90,10 @@ exports.updatePost = async (req, res) => {
         success: false,
       });
     }
-    // update the post captions and change the updated at
 
     post.caption = req.body.caption;
     post.updatedAt = Date.now();
     const updatedPost = await post.save();
-
-    // send res
 
     res.status(200).json({
       message: "Post updated successfully",
@@ -116,20 +110,16 @@ exports.updatePost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   try {
-    // get the postid
     const { postId } = req.params;
 
-    // find post using postid
     const post = await Post.findById(postId);
 
-    // if post not found send response like post not found
     if (!post) {
       return res.status(404).json({
         message: "Post not found",
         success: false,
       });
     }
-    // check if user who trying to delete the post is match or not
     const userMatch = await post.matchUser(req.user.id);
 
     if (!userMatch) {
@@ -139,15 +129,56 @@ exports.deletePost = async (req, res) => {
       });
     }
 
-    // get publicId of post and delete the post from cloudinary
     const { id } = post.imageInfo;
     await cloudinary.uploader.destroy(id);
 
-    // delete the post from database
     await Post.findByIdAndDelete(postId);
     res.status(200).json({
       message: "Post is deleted successfully",
       success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+exports.getSinglePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    res.status(200).json({
+      message: "Post found",
+      success: true,
+      post,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+exports.getUsersAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({
+      userId: req.user.id,
+    });
+
+    res.status(200).json({
+      message: "Users all Posts fetch",
+      success: true,
+      posts,
     });
   } catch (error) {
     console.log(error);
