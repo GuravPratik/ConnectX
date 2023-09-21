@@ -254,7 +254,7 @@ exports.likePost = async (req, res) => {
   }
 };
 
-exports.unLikePost = async (req, res) => {
+exports.disLikePost = async (req, res) => {
   try {
     if (!req.params.postId || !req.user.id) {
       return res.status(400).json({
