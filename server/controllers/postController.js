@@ -188,3 +188,113 @@ exports.getUsersAllPosts = async (req, res) => {
     });
   }
 };
+
+// TODO: 1) like and unlike post
+
+exports.likePost = async (req, res) => {
+  try {
+    if (!req.params.postId || !req.user.id) {
+      return res.status(400).json({
+        message: "Invalid input data",
+        success: false,
+      });
+    }
+    const post = await Post.findById(req.params.postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+
+    const user = await User.findById(req.user.id).select(
+      "id userName fullName"
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    // Check if the user has already liked the post
+    const hasLiked = post.likesId.some(
+      (like) => like.userId.toString() === req.user.id
+    );
+
+    if (hasLiked) {
+      return res.status(400).json({
+        message: "User has already liked the post",
+        success: false,
+      });
+    }
+
+    const likeObj = {
+      userId: user.id,
+      userName: user.userName,
+      fullName: user.fullName,
+    };
+
+    post.likesId.push(likeObj);
+    await post.save();
+
+    res.status(200).json({
+      message: "You Like the post",
+      success: true,
+      post,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+exports.unLikePost = async (req, res) => {
+  try {
+    if (!req.params.postId || !req.user.id) {
+      return res.status(400).json({
+        message: "Invalid input data",
+        success: false,
+      });
+    }
+
+    const post = await Post.findById(req.params.postId);
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+        success: false,
+      });
+    }
+    // Find the index of the like object for the current user
+    const likeIndex = post.likesId.findIndex(
+      (like) => like.userId.toString() === req.user.id
+    );
+    if (likeIndex === -1) {
+      return res.status(400).json({
+        message: "User has not liked the post",
+        success: false,
+      });
+    }
+
+    post.likesId.pull({ userId: req.user.id });
+    await post.save();
+
+    res.status(200).json({
+      message: "Your Like from the post removed successfully",
+      success: true,
+      post,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
