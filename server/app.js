@@ -8,6 +8,7 @@ const cors = require("cors");
 // routes
 const user = require("./routes/user");
 const post = require("./routes/post");
+const comment = require("./routes/comment");
 
 // App
 const app = express();
@@ -33,5 +34,6 @@ app.use(morgan("tiny"));
 // routes middleware
 app.use("/api/v1", user);
 app.use("/api/v1", post);
+app.use("/api/v1", comment);
 
 module.exports = app;

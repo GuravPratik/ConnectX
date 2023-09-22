@@ -28,4 +28,5 @@ router.route("/follow").patch(isLoggedIn, follow);
 router.route("/unfollow").patch(isLoggedIn, unfollow);
 
 router.route("/user/details").get(getUserById);
+
 module.exports = router;

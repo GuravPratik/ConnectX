@@ -22,4 +22,8 @@ const commentSchema = new Schema({
   },
 });
 
+commentSchema.methods.matchUser = function (userId) {
+  return this.userId.equals(userId);
+};
+
 module.exports = model("Comment", commentSchema);

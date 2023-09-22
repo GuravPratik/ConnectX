@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary").v2;
 
 exports.getPost = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().populate("userId", "id userName fullName");
     res.json({
       message: "Post get route",
       posts,
@@ -85,7 +85,7 @@ exports.updatePost = async (req, res) => {
     const matchUser = await post.matchUser(req.user.id);
 
     if (!matchUser) {
-      return res.status(401).json({
+      return res.status(400).json({
         message: `You don't have an authority to update the post!`,
         success: false,
       });
@@ -148,7 +148,10 @@ exports.deletePost = async (req, res) => {
 
 exports.getSinglePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.postId);
+    const post = await Post.findById(req.params.postId).populate(
+      "userId",
+      "id userName fullName"
+    );
     if (!post) {
       return res.status(404).json({
         message: "Post not found",
