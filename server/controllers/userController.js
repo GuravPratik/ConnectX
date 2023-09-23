@@ -6,7 +6,6 @@ const crypto = require("crypto");
 
 exports.signUp = async (req, res) => {
   const { userName, fullName, email, password } = req.body;
-
   // check if the all info is present or not
   if (!userName || !fullName || !email || !password) {
     return res.json({
@@ -259,6 +258,7 @@ exports.updateUserDetails = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "Internal server error",
+      success: false,
     });
   }
 };
@@ -354,6 +354,7 @@ exports.follow = async (req, res) => {
     console.log(error);
     res.status(500).json({
       message: "Internal server error",
+      success: false,
     });
   }
 };
@@ -395,6 +396,7 @@ exports.unfollow = async (req, res) => {
     console.log(error);
     res.status(500).json({
       message: "Internal server error",
+      success: false,
     });
   }
 };
@@ -421,6 +423,30 @@ exports.getUserById = async (req, res) => {
     console.log(error);
     res.status(500).json({
       message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+exports.searchUser = async (req, res) => {
+  // e.g url = http://localhost:3001/api/v1/users?userName=pratik
+  try {
+    const { userName } = req.query;
+
+    const query = User.find();
+    query.where("userName").regex(new RegExp(userName, "i"));
+    query.select("id userName fullName profilePic");
+
+    const users = await query.exec();
+
+    res.status(200).json({
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Error while searching user",
+      success: false,
     });
   }
 };
