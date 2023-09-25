@@ -1,3 +1,4 @@
+import Link from "@mui/material/Link";
 import { useMoveBack } from "../hooks/useMoveBack";
 
 function PageNotFound() {
@@ -7,7 +8,17 @@ function PageNotFound() {
       <div>
         <h1>404 - Page Not Found</h1>
         <p>The page you are looking for could not be found 😢</p>
-        <button onClick={moveBack}>&larr; Go back</button>
+        <Link
+          onClick={moveBack}
+          variant="body2"
+          underline="hover"
+          component="button"
+          sx={{
+            color: "#7986cb",
+          }}
+        >
+          &larr; Go back
+        </Link>
       </div>
     </div>
   );
