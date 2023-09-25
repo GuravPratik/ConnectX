@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Homepage from "./pages/Homepage";
-import PageNotFound from "./components/PageNotFound";
+import PageNotFound from "./pages/PageNotFound";
 
 export default function App() {
   return (
