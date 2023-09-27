@@ -76,7 +76,9 @@ exports.login = async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ userName }).select("+password");
+    const user = await User.findOne({
+      userName: userName.toLowerCase(),
+    }).select("+password");
     if (!user) {
       return res.status(403).json({
         message: "User not found ! Please first Sign up",

@@ -34,6 +34,10 @@ exports.createPost = async (req, res) => {
     const file = req.files.postImage;
     const result = await cloudinary.uploader.upload(file.tempFilePath, {
       folder: "ConnectX/Posts",
+      width: 960,
+      height: 640,
+      crop: "fill",
+      quality: "auto",
     });
 
     const imageInfo = {
