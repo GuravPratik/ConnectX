@@ -17,17 +17,16 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <Box
-      flex={1}
-      p={2}
-      sx={{
-        borderRight: "solid",
-        height: "100vh",
-        borderWidth: "0.8px",
-        borderColor: "#878383",
-      }}
-    >
-      <Box position="fixed">
+    <Box flex={1} p={2}>
+      <Box
+        position="fixed"
+        sx={{
+          borderRight: "solid",
+          height: "100vh",
+          borderWidth: "0.8px",
+          borderColor: "#878383",
+        }}
+      >
         <Typography
           variant="h5"
           component={Link}
@@ -36,7 +35,7 @@ const Sidebar = () => {
         >
           ConnectX
         </Typography>
-        <List>
+        <List sx={{ padding: "20px" }}>
           <SidebarItem icon={<Home />} url="/" name="Home" />
           <SidebarItem icon={<SearchIcon />} url="/search" name="Search" />
           <SidebarItem icon={<AddIcon />} url="/create" name="Create" />
