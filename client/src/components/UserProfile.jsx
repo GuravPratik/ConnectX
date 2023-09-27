@@ -5,13 +5,16 @@ function UserProfile({ user }) {
     <ListItem>
       <ListItemButton component={Link} to={`/profile/${user.id}`}>
         <Avatar
-          alt={user.name}
+          alt={user.name ? user.name : user.userName}
           src={user.dpUrl}
           sx={{
             marginRight: "7px",
           }}
         />
-        <ListItemText primary={user.name} secondary={user.fullName} />
+        <ListItemText
+          primary={user.name ? user.name : user.userName}
+          secondary={user.fullName}
+        />
       </ListItemButton>
     </ListItem>
   );

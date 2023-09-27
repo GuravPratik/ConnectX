@@ -7,6 +7,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Homepage from "./pages/Homepage";
 
 import AppLayout from "./components/AppLayout";
+import Posts from "./pages/Posts";
 // just for the testing it is created remove it after creating a login page
 function Login() {
   return <Box flexGrow={5}>Login</Box>;
@@ -18,14 +19,8 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
-            <Route
-              index
-              element={
-                <>
-                  <Homepage />
-                </>
-              }
-            />
+            <Route index element={<Homepage />} />
+            <Route path="/posts/:postId" element={<Posts />} />
             {/* just add remaining routes like profile ,create a new post, search-optional,  */}
           </Route>
           <Route path="login" element={<Login />} />

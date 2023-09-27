@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function Post({ post }) {
+  // TODO: delete it
   const userId = "65069b176fee902589df976a";
 
   const [isLike, setIsLike] = useState(
@@ -24,7 +25,7 @@ export default function Post({ post }) {
   );
   const navigate = useNavigate();
   function handlePostClick() {
-    navigate(`/post/${post._id}`);
+    navigate(`/posts/${post._id}`);
   }
 
   //   useEffect(() => {
@@ -84,7 +85,7 @@ export default function Post({ post }) {
         <IconButton
           aria-label="share"
           component={Link}
-          to={`/post/${post._id}`}
+          to={`/posts/${post._id}`}
         >
           <CommentIcon />
         </IconButton>

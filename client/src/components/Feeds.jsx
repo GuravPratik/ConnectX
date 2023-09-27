@@ -74,7 +74,7 @@ function Feeds() {
         flexDirection: "column",
         justifyContent: "start",
         alignItems: "center",
-        gap: "10px",
+        gap: "20px",
       }}
     >
       {postData.map((post) => {
@@ -83,22 +83,5 @@ function Feeds() {
     </Box>
   );
 }
-// data.map(post => console.log(post.imageInfo.secureUrl, post.userId._id, post.userId.userName, post.userId.fullName, post.caption, post.likesId.length))
-// imageUrl , userInfo, likes, date
-// {
-//   imageInfo: {
-//     id: "ConnectX/Posts/h9xqnnuhfvq77xrvqzb9",
-//     secureUrl:
-//       "https://res.cloudinary.com/diqgskxvi/image/upload/v1695008566/ConnectX/Posts/h9xqnnuhfvq77xrvqzb9.jpg",
-//   },
-//   _id: "6507c730172d97c7d952a022",
-//   userId: {
-//     _id: "65069a606fee902589df9766",
-//     userName: "testUser1",
-//     fullName: "TestUser1",
-//   },
-//   likesId: [],
-//   createdAt: "2023-09-18T03:42:40.109Z",
-//   __v: 0,
-// }
+
 export default Feeds;
