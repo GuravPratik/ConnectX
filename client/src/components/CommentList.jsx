@@ -1,5 +1,6 @@
 import { Box, List } from "@mui/material";
 import CommentCard from "./CommentCard";
+import { useParams } from "react-router-dom";
 
 const commentsData = [
   {
@@ -60,11 +61,14 @@ function CommentList() {
     */
 
   /* TODO: 
-    1) get post id as a prop 
+    1) get post id as a prop or get from url using useParams hook 
     2) fetch all comments of the post using id
     3) display all comments for that post 
     4) may be need to use useEffect to fetch posts comments or may be use react query (will figure out it later)
     */
+
+  const { postId } = useParams();
+  console.log(postId);
   return (
     <Box>
       <List>

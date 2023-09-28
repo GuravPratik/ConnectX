@@ -44,7 +44,7 @@ const Sidebar = () => {
             url="/notifications"
             name="Notifications"
           />
-          <SidebarItem icon={<AccountBox />} url="/profile" name="Profile" />
+          <SidebarItem icon={<AccountBox />} url="/profile/1" name="Profile" />
           <SidebarItem icon={<Settings />} url="/setting" name="Settings" />
           <ListItem disablePadding>
             <ListItemButton

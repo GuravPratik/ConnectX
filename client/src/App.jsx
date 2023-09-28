@@ -8,6 +8,7 @@ import Homepage from "./pages/Homepage";
 
 import AppLayout from "./components/AppLayout";
 import Posts from "./pages/Posts";
+import Profile from "./pages/Profile";
 // just for the testing it is created remove it after creating a login page
 function Login() {
   return <Box flexGrow={5}>Login</Box>;
@@ -21,6 +22,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route index element={<Homepage />} />
             <Route path="/posts/:postId" element={<Posts />} />
+            <Route path="/profile/:userId" element={<Profile />} />
             {/* just add remaining routes like profile ,create a new post, search-optional,  */}
           </Route>
           <Route path="login" element={<Login />} />

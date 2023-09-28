@@ -32,7 +32,7 @@ function CommentBox() {
               width: "fit-content",
             }}
           >
-            submit
+            comment
           </Button>
         </form>
       </Container>
