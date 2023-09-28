@@ -15,6 +15,7 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { formatDateFromNow } from "../utils/helper";
 
 export default function Post({ post }) {
   // TODO: delete it
@@ -49,7 +50,7 @@ export default function Post({ post }) {
           />
         }
         title={post.userId.userName}
-        subheader={post.createdAt}
+        subheader={`${formatDateFromNow(post.createdAt)} ago`}
       />
       <CardMedia
         sx={{
@@ -59,7 +60,7 @@ export default function Post({ post }) {
         component="img"
         height="250"
         image={post.imageInfo.secureUrl}
-        alt="Paella dish"
+        alt="post Image"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">

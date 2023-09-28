@@ -9,6 +9,8 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -19,6 +21,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import CommentList from "../components/CommentList";
 import CommentBox from "../components/CommentBox";
+import { formatDateFromNow } from "../utils/helper";
+import EditForm from "../components/EditForm";
 
 const postData = {
   imageInfo: {
@@ -50,29 +54,21 @@ const postData = {
 
 function Posts() {
   const userId = "65069b176fee902589df976a";
+  const isOwner = userId === postData.userId._id;
   const { postId } = useParams();
   const [isLike, setIsLike] = useState(
     postData.likesId.some((like) => like.userId === userId)
   );
+
+  function updatePostCaption(data) {
+    console.log(data);
+    setIsPostEdit(false);
+  }
+
+  const [isPostEdit, setIsPostEdit] = useState(false);
+
   return (
     <Box flexGrow={3}>
-      {/* <Card>
-        <CardMedia
-          component="img"
-          height="140"
-          image="https://res.cloudinary.com/diqgskxvi/image/upload/v1695125210/ConnectX/Posts/dgxqfdg1in90upnfeaii.jpg"
-          alt="green iguana"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
-      </Card> */}
       <Container
         sx={{
           marginTop: "20px",
@@ -88,7 +84,24 @@ function Posts() {
         >
           <CardHeader
             component={() => {
-              return <UserProfile user={postData.userId} />;
+              return (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <UserProfile user={postData.userId} />
+                  {isOwner && !isPostEdit && (
+                    <EditOutlinedIcon
+                      onClick={() => {
+                        setIsPostEdit(true);
+                      }}
+                    />
+                  )}
+                </Box>
+              );
             }}
           />
           <CardMedia
@@ -100,12 +113,22 @@ function Posts() {
             src="https://res.cloudinary.com/diqgskxvi/image/upload/v1695125210/ConnectX/Posts/dgxqfdg1in90upnfeaii.jpg"
           />
           <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {postData.caption}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {postData.createdAt}
-            </Typography>
+            {!isPostEdit ? (
+              <>
+                <Typography variant="body2" color="text.secondary">
+                  {postData.caption}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {formatDateFromNow(postData.createdAt)} ago
+                </Typography>
+              </>
+            ) : (
+              <EditForm
+                updateFunction={updatePostCaption}
+                stateFunction={setIsPostEdit}
+                defaultValue={postData.caption}
+              />
+            )}
           </CardContent>
           <CardActions disableSpacing>
             <IconButton
@@ -136,7 +159,7 @@ function Posts() {
         <Container>
           {/*
             TODO: 
-             send comment id as a prop to the comment list component
+             send post id as a prop to the comment list component
             */}
           <CommentList />
           <CommentBox />

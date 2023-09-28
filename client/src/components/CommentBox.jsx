@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  TextField,
-  //   OutlinedInput,
-  //   Typography,
-} from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 function CommentBox() {
   const { register, watch, handleSubmit } = useForm();
@@ -28,11 +21,7 @@ function CommentBox() {
             variant="outlined"
             {...register("comment", { required: true })}
           />
-          {/* {errors.comment && (
-            <Typography variant="span" component="p">
-              This field is requied
-            </Typography>
-          )} */}
+
           <Button
             type="submit"
             variant="contained"

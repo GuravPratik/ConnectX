@@ -38,6 +38,20 @@ const commentsData = [
     createdAt: "2023-09-22T04:12:05.576Z",
     __v: 0,
   },
+  {
+    _id: "650d0d8dad0ecbee7dcb7512",
+    userId: {
+      _id: "65069b176fee902589df976a",
+      userName: "testUser2",
+      fullName: "TestUser2",
+    },
+    postId: "65098ed3c28eaeb46a48da91",
+    content:
+      "This is the first comment, Test1 asiceafhw90qfhasiicnsicn nhw 0f9qwfq3y8f c 0ehcqhve vv8heq0fh3qg3-jvdapcimw0qh hhf0a9shvcsavwq",
+    createdAt: "2023-09-28T03:44:13.633Z",
+    updatedAt: "2023-10-22T03:44:13.633Z",
+    __v: 0,
+  },
 ];
 
 function CommentList() {

@@ -1,5 +1,14 @@
 import { Box } from "@mui/material";
 import Post from "./Post";
+import styled from "@emotion/styled";
+
+const StyledBox = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "start",
+  alignItems: "center",
+  gap: "20px",
+}));
 
 const postData = [
   {
@@ -66,21 +75,11 @@ const postData = [
 
 function Feeds() {
   return (
-    <Box
-      flex={4}
-      p={2}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "start",
-        alignItems: "center",
-        gap: "20px",
-      }}
-    >
+    <StyledBox flex={4} p={2}>
       {postData.map((post) => {
         return <Post key={post._id} post={post} />;
       })}
-    </Box>
+    </StyledBox>
   );
 }
 
