@@ -8,9 +8,24 @@ function UserStats() {
         gap: "20px",
       }}
     >
-      <Typography>10 posts</Typography>
-      <Typography>10 followers</Typography>
-      <Typography>10 following</Typography>
+      <Typography component="p">
+        <Typography variant="subtitle2" component="span">
+          10{" "}
+        </Typography>
+        posts
+      </Typography>
+      <Typography component="p">
+        <Typography variant="subtitle2" component="span">
+          10{" "}
+        </Typography>{" "}
+        followers
+      </Typography>
+      <Typography component="p">
+        <Typography variant="subtitle2" component="span">
+          10{" "}
+        </Typography>{" "}
+        following
+      </Typography>
     </Box>
   );
 }

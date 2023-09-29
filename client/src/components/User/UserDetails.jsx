@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+
 import { Box, Button, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import UserStats from "./UserStats";
@@ -43,6 +45,8 @@ const DetailBox = styled(Box)(() => ({
 }));
 
 function UserDetails() {
+  const currentUserId = "1";
+  const { userId } = useParams();
   return (
     <StyledBox>
       <LeftBox>
@@ -58,9 +62,16 @@ function UserDetails() {
                 to show box with form use dialog box from material ui
           
           */}
-          <Button variant="contained" size="small">
-            Edit
-          </Button>
+
+          {currentUserId === userId ? (
+            <Button variant="contained" size="small">
+              Edit
+            </Button>
+          ) : (
+            <Button variant="contained" size="small">
+              Follow
+            </Button>
+          )}
         </StateBox>
         <StateBox>
           <UserStats />

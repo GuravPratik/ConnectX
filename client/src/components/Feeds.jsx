@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import Post from "./Post";
 import styled from "@emotion/styled";
+import PostSkeleton from "./Posts/PostSkeleton";
 
 const StyledBox = styled(Box)(() => ({
   display: "flex",
@@ -71,9 +72,37 @@ const postData = [
     createdAt: "2023-09-27T04:38:10.809Z",
     __v: 0,
   },
+  {
+    imageInfo: {
+      id: "ConnectX/Posts/kvxybilrak9lodp5iypm",
+      secureUrl:
+        "https://res.cloudinary.com/diqgskxvi/image/upload/v1695789499/ConnectX/Posts/kvxybilrak9lodp5iypm.jpg",
+    },
+    _id: "6513b1b2f3f9208a373652a101",
+    userId: {
+      _id: "6513b0d5880a4f5a5b5dc700",
+      userName: "testuser4",
+      fullName: "TestUser4",
+    },
+    caption: "Test Post 2",
+    likesId: [],
+    createdAt: "2023-09-27T04:38:10.809Z",
+    __v: 0,
+  },
 ];
 
 function Feeds() {
+  const isLoading = false;
+  if (isLoading) {
+    return (
+      <StyledBox flex={4} p={2}>
+        <PostSkeleton />
+        <PostSkeleton />
+        <PostSkeleton />
+      </StyledBox>
+    );
+  }
+
   return (
     <StyledBox flex={4} p={2}>
       {postData.map((post) => {
