@@ -1,4 +1,5 @@
 import { Box, ImageList, ImageListItem } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const itemData = [
   {
@@ -68,7 +69,11 @@ function UserPost() {
     <Box>
       <ImageList sx={{ width: "100%", height: "100%" }} cols={3}>
         {itemData.map((item) => (
-          <ImageListItem key={item.id}>
+          <ImageListItem
+            component={Link}
+            key={item.id}
+            to={`/posts/${item.id}`}
+          >
             <img
               style={{ width: "250px", height: "250px" }}
               src={`${item.img}`}

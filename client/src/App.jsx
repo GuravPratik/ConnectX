@@ -1,7 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import { Box } from "@mui/material";
+import { Toaster } from "react-hot-toast";
 
 import PageNotFound from "./pages/PageNotFound";
 import Homepage from "./pages/Homepage";
@@ -9,26 +8,45 @@ import Homepage from "./pages/Homepage";
 import AppLayout from "./components/AppLayout";
 import Posts from "./pages/Posts";
 import Profile from "./pages/Profile";
+import Login from "./pages/Login";
 // just for the testing it is created remove it after creating a login page
-function Login() {
-  return <Box flexGrow={5}>Login</Box>;
-}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    // errorElement: <Error />,
+    children: [
+      {
+        path: "/",
+        element: <Homepage />,
+      },
+      {
+        path: "/posts/:postId",
+        element: <Posts />,
+        // loader: menuLoader,
+        // errorElement: <Error />,
+      },
+      {
+        path: "//profile/:userId",
+        element: <Profile />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
+  },
+]);
 
 export default function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route index element={<Homepage />} />
-            <Route path="/posts/:postId" element={<Posts />} />
-            <Route path="/profile/:userId" element={<Profile />} />
-            {/* just add remaining routes like profile ,create a new post, search-optional,  */}
-          </Route>
-          <Route path="login" element={<Login />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
       <Toaster
         position="top-center"
         gutter={12}

@@ -14,7 +14,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useParams } from "react-router-dom";
+import { ScrollRestoration, useParams } from "react-router-dom";
 import UserProfile from "../components/UserProfile";
 import { useState } from "react";
 
@@ -68,104 +68,110 @@ function Posts() {
   const [isPostEdit, setIsPostEdit] = useState(false);
 
   return (
-    <Box flexGrow={3}>
-      <Container
+    <>
+      <Box
+        flexGrow={3}
         sx={{
-          marginTop: "20px",
-          // border: "solid red",
-          padding: "20px",
+          width: "46%",
         }}
       >
-        <Card
+        <Container
           sx={{
-            // border: "solid blue",
-            padding: "10px",
+            marginTop: "20px",
+            padding: "20px",
           }}
         >
-          <CardHeader
-            component={() => {
-              return (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <UserProfile user={postData.userId} />
-                  {isOwner && !isPostEdit && (
-                    <EditOutlinedIcon
-                      onClick={() => {
-                        setIsPostEdit(true);
-                      }}
-                    />
-                  )}
-                </Box>
-              );
-            }}
-          />
-          <CardMedia
+          <Card
             sx={{
-              // border: "solid yellow",
-              maxHeight: "500px",
+              padding: "10px",
             }}
-            component="img"
-            src="https://res.cloudinary.com/diqgskxvi/image/upload/v1695125210/ConnectX/Posts/dgxqfdg1in90upnfeaii.jpg"
-          />
-          <CardContent>
-            {!isPostEdit ? (
-              <>
-                <Typography variant="body2" color="text.secondary">
-                  {postData.caption}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {formatDateFromNow(postData.createdAt)} ago
-                </Typography>
-              </>
-            ) : (
-              <EditForm
-                updateFunction={updatePostCaption}
-                stateFunction={setIsPostEdit}
-                defaultValue={postData.caption}
-              />
-            )}
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton
-              aria-label="add to favorites"
-              onClick={() => {
-                setIsLike((prevState) => !prevState);
+          >
+            <CardHeader
+              component={() => {
+                return (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <UserProfile user={postData.userId} />
+                    {isOwner && !isPostEdit && (
+                      <EditOutlinedIcon
+                        onClick={() => {
+                          setIsPostEdit(true);
+                        }}
+                      />
+                    )}
+                  </Box>
+                );
               }}
-            >
-              {isLike ? (
-                <FavoriteIcon sx={{ color: "#ea1616" }} />
+            />
+            <CardMedia
+              sx={{
+                // border: "solid yellow",
+                maxHeight: "500px",
+              }}
+              component="img"
+              src="https://res.cloudinary.com/diqgskxvi/image/upload/v1695125210/ConnectX/Posts/dgxqfdg1in90upnfeaii.jpg"
+            />
+            <CardContent>
+              {!isPostEdit ? (
+                <>
+                  <Typography variant="body2" color="text.secondary">
+                    {postData.caption}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {formatDateFromNow(postData.createdAt)} ago
+                  </Typography>
+                </>
               ) : (
-                <FavoriteBorderIcon />
+                <EditForm
+                  updateFunction={updatePostCaption}
+                  stateFunction={setIsPostEdit}
+                  defaultValue={postData.caption}
+                />
               )}
-            </IconButton>
-            <Typography sx={{ marginRight: "5px" }}>
-              {postData.likesId.length} Likes
-            </Typography>
-            <IconButton
-              aria-label="share"
-              component={Link}
-              to={`/posts/${postData._id}`}
-            >
-              <CommentIcon />
-            </IconButton>
-            <Typography sx={{ marginRight: "5px" }}>0 comments</Typography>
-          </CardActions>
-        </Card>
-        <Container>
-          {/*
+            </CardContent>
+            <CardActions disableSpacing>
+              <IconButton
+                aria-label="add to favorites"
+                onClick={() => {
+                  setIsLike((prevState) => !prevState);
+                }}
+              >
+                {isLike ? (
+                  <FavoriteIcon sx={{ color: "#ea1616" }} />
+                ) : (
+                  <FavoriteBorderIcon />
+                )}
+              </IconButton>
+              <Typography sx={{ marginRight: "5px" }}>
+                {postData.likesId.length} Likes
+              </Typography>
+              <IconButton
+                aria-label="share"
+                component={Link}
+                to={`/posts/${postData._id}`}
+              >
+                <CommentIcon />
+              </IconButton>
+              <Typography sx={{ marginRight: "5px" }}>0 comments</Typography>
+            </CardActions>
+          </Card>
+          <Container>
+            {/*
             TODO: 
              send post id as a prop to the comment list component
             */}
-          <CommentList />
-          <CommentBox />
+            <CommentList />
+            <CommentBox />
+          </Container>
         </Container>
-      </Container>
-    </Box>
+      </Box>
+      <ScrollRestoration />
+    </>
   );
 }
 

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function UserProfile({ user }) {
   return (
     <ListItem>
-      <ListItemButton component={Link} to={`/profile/${user.id}`}>
+      <ListItemButton component={Link} to={`/profile/${user.id || user._id}`}>
         <Avatar
           alt={user.name ? user.name : user.userName}
           src={user.dpUrl}
