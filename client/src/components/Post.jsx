@@ -35,7 +35,7 @@ export default function Post({ post }) {
   //   }, [post]);
 
   return (
-    <Card sx={{ maxWidth: 450 }}>
+    <Card sx={{ maxwidth: 450, minWidth: 400 }}>
       <CardHeader
         component={Link}
         to={`/profile/${post.userId._id}`}

@@ -76,9 +76,26 @@ const postData = [
     imageInfo: {
       id: "ConnectX/Posts/kvxybilrak9lodp5iypm",
       secureUrl:
-        "https://res.cloudinary.com/diqgskxvi/image/upload/v1695789499/ConnectX/Posts/kvxybilrak9lodp5iypm.jpg",
+        "https://res.cloudinary.com/diqgskxvi/image/upload/v1694931762/ConnectX/Users/f5occh3cdepzjxdpbz9y.jpg",
     },
     _id: "6513b1b2f3f9208a373652a101",
+    userId: {
+      _id: "6513b0d5880a4f5a5b5dc700",
+      userName: "testuser4",
+      fullName: "TestUser4",
+    },
+    caption: "Test Post 2",
+    likesId: [],
+    createdAt: "2023-09-27T04:38:10.809Z",
+    __v: 0,
+  },
+  {
+    imageInfo: {
+      id: "ConnectX/Posts/kvxybilrak9lodp5iypm",
+      secureUrl:
+        "https://res.cloudinary.com/diqgskxvi/image/upload/v1695179499/ConnectX/Posts/niiygytl0bskozjwafpz.jpg",
+    },
+    _id: "6513b1b2f3f9208a373652a10111",
     userId: {
       _id: "6513b0d5880a4f5a5b5dc700",
       userName: "testuser4",

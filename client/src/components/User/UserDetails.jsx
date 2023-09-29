@@ -22,7 +22,7 @@ const StateBox = styled(Box)(() => ({
 
 const RightBox = styled(Box)(() => ({
   padding: "10px",
-  width: "60%",
+  width: "50%",
   display: "flex",
   flexDirection: "column",
   gap: "10px",
@@ -30,7 +30,7 @@ const RightBox = styled(Box)(() => ({
 }));
 const LeftBox = styled(Box)(() => ({
   display: "flex",
-  width: "30%",
+  width: "50%",
   padding: "10px",
   justifyContent: "center",
   alignSelf: "center",
