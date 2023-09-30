@@ -4,8 +4,6 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PostDeleteAlert from "./PostDeleteAlert";
 import { useState } from "react";
 function PostAction({ setIsPostEdit, postId }) {
-  // handleClose, open, postId
-
   const [open, setOpen] = useState(false);
   function handleClose() {
     console.log("Post delete alert close");

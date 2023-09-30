@@ -1,5 +1,5 @@
 import { Box, List, Typography } from "@mui/material";
-import UserProfile from "./UserProfile";
+import UserProfile from "../UserProfile";
 
 function Rightbar() {
   const users = [

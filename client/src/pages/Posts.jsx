@@ -19,8 +19,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import UserProfile from "../components/UserProfile";
-import CommentList from "../components/CommentList";
-import CommentBox from "../components/CommentBox";
+import CommentList from "../components/Comments/CommentList";
+import CommentBox from "../components/Comments/CommentBox";
 import EditForm from "../components/EditForm";
 import PostAction from "../components/Posts/PostAction";
 import { formatDateFromNow } from "../utils/helper";

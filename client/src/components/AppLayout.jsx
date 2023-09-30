@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Homepage/Sidebar";
 
 function AppLayout() {
   return (

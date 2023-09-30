@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Post from "./Post";
 import styled from "@emotion/styled";
-import PostSkeleton from "./Posts/PostSkeleton";
+import PostSkeleton from "../Posts/PostSkeleton";
 
 const StyledBox = styled(Box)(() => ({
   display: "flex",

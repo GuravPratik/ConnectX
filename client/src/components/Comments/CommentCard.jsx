@@ -7,8 +7,8 @@ import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import EditOutlined from "@mui/icons-material/EditOutlined";
 import { useState } from "react";
-import { formatDateFromNow } from "../utils/helper";
-import EditForm from "./EditForm";
+import { formatDateFromNow } from "../../utils/helper";
+import EditForm from "../EditForm";
 
 function CommentCard({ comment }) {
   const userId = "65069b176fee902589df976a";

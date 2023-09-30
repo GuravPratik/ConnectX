@@ -1,5 +1,5 @@
-import Feeds from "../components/Feeds";
-import Rightbar from "../components/Rightbar";
+import Feeds from "../components/Homepage/Feeds";
+import Rightbar from "../components/Homepage/Rightbar";
 function Homepage() {
   return (
     <>

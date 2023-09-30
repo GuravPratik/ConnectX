@@ -1,6 +1,6 @@
 import { Box, List } from "@mui/material";
-import CommentCard from "./CommentCard";
 import { useParams } from "react-router-dom";
+import CommentCard from "./CommentCard";
 
 const commentsData = [
   {
