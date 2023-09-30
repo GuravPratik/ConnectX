@@ -1,8 +1,19 @@
 import { Box, Button, Container, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 function CommentBox() {
-  const { register, watch, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data.comment);
+  const { register, watch, setValue, handleSubmit } = useForm();
+  const onSubmit = (data) => {
+    console.log(data.comment);
+
+    // removing value on success api call
+    setValue("comment", "");
+  };
+  /**
+   * TODO:
+   *
+   *  1) When user clicks on comment empty text field
+   *
+   */
   return (
     <Box>
       <Container>

@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { formatDateFromNow } from "../utils/helper";
 
+// Homepage post component
+
 export default function Post({ post }) {
   // TODO: delete it
   const userId = "65069b176fee902589df976a";

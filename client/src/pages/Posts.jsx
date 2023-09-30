@@ -10,19 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { ScrollRestoration, useParams } from "react-router-dom";
-import UserProfile from "../components/UserProfile";
-import { useState } from "react";
 
+import { ScrollRestoration, useParams } from "react-router-dom";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+
+import UserProfile from "../components/UserProfile";
 import CommentList from "../components/CommentList";
 import CommentBox from "../components/CommentBox";
-import { formatDateFromNow } from "../utils/helper";
 import EditForm from "../components/EditForm";
+import PostAction from "../components/Posts/PostAction";
+import { formatDateFromNow } from "../utils/helper";
 
 const postData = {
   imageInfo: {
@@ -61,6 +62,7 @@ function Posts() {
   );
 
   function updatePostCaption(data) {
+    // get updated data
     console.log(data);
     setIsPostEdit(false);
   }
@@ -94,14 +96,14 @@ function Posts() {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
+                      gap: "10px",
                     }}
                   >
                     <UserProfile user={postData.userId} />
                     {isOwner && !isPostEdit && (
-                      <EditOutlinedIcon
-                        onClick={() => {
-                          setIsPostEdit(true);
-                        }}
+                      <PostAction
+                        setIsPostEdit={setIsPostEdit}
+                        postId={postId}
                       />
                     )}
                   </Box>
@@ -110,7 +112,6 @@ function Posts() {
             />
             <CardMedia
               sx={{
-                // border: "solid yellow",
                 maxHeight: "500px",
               }}
               component="img"

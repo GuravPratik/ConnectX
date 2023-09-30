@@ -1,4 +1,4 @@
-import { Box, ImageList, ImageListItem } from "@mui/material";
+import { Box, ImageList, ImageListItem, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const itemData = [
@@ -65,6 +65,14 @@ const itemData = [
 ];
 
 function UserPost() {
+  if (itemData.length === 0) {
+    return (
+      <Box>
+        <Typography>User Dont have any post</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <ImageList sx={{ width: "100%", height: "100%" }} cols={3}>
