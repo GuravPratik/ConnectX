@@ -9,7 +9,7 @@ import AppLayout from "./components/AppLayout";
 import Posts from "./pages/Posts";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
-// just for the testing it is created remove it after creating a login page
+import Create from "./pages/Create";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +28,12 @@ const router = createBrowserRouter([
         // errorElement: <Error />,
       },
       {
-        path: "//profile/:userId",
+        path: "/profile/:userId",
         element: <Profile />,
+      },
+      {
+        path: "/create",
+        element: <Create />,
       },
     ],
   },
