@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Box, Button, Typography } from "@mui/material";
 import styled from "@emotion/styled";
@@ -47,6 +47,11 @@ const DetailBox = styled(Box)(() => ({
 function UserDetails() {
   const currentUserId = "1";
   const { userId } = useParams();
+  const navigate = useNavigate();
+  function handleOnEditClick() {
+    navigate("/setting");
+  }
+
   return (
     <StyledBox>
       <LeftBox>
@@ -64,7 +69,11 @@ function UserDetails() {
           */}
 
           {currentUserId === userId ? (
-            <Button variant="contained" size="small">
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleOnEditClick}
+            >
               Edit
             </Button>
           ) : (
@@ -85,7 +94,7 @@ function UserDetails() {
             }}
           >
             Just checking if the bio appers good or not and if not fix it
-            otherwise keep as it is
+            otherwise keep as it is Just checking if the bio
           </Typography>
         </DetailBox>
       </RightBox>

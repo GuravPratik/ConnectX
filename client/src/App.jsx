@@ -10,6 +10,7 @@ import Posts from "./pages/Posts";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Create from "./pages/Create";
+import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <Create />,
+      },
+      {
+        path: "/setting",
+        element: <Settings />,
       },
     ],
   },
