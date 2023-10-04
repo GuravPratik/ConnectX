@@ -73,6 +73,7 @@ function EditPassword() {
           <StyledLabel htmlFor="newPassword">New Password</StyledLabel>
           <TextField
             id="newPassword"
+            type="password"
             placeholder="new password"
             variant="outlined"
             {...register("password", {
@@ -97,6 +98,7 @@ function EditPassword() {
         <StyledBox>
           <StyledLabel htmlFor="confirmPassword">Confirm Password</StyledLabel>
           <TextField
+            type="password"
             id="confirmPassword"
             placeholder="Confirm password"
             variant="outlined"

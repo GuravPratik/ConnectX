@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Create from "./pages/Create";
 import Settings from "./pages/Settings";
 import Search from "./pages/Search";
+import Signup from "./pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
   {
     path: "*",

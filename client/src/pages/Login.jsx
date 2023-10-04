@@ -1,5 +1,10 @@
 import { Box } from "@mui/material";
+import LoginForm from "../components/Auth/LoginForm";
 
 export default function Login() {
-  return <Box flexGrow={5}>Login</Box>;
+  return (
+    <Box>
+      <LoginForm />
+    </Box>
+  );
 }
