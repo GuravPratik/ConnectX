@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Create from "./pages/Create";
 import Settings from "./pages/Settings";
+import Search from "./pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/setting",
         element: <Settings />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },
