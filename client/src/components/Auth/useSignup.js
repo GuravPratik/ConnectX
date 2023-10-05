@@ -14,10 +14,9 @@ export function useSignup() {
       toast.success(
         `Congratulations! Your account has been successfully created. Please proceed to log in to access the application.`
       );
-      navigate("/login");
+      navigate("/login", { replace: true });
     },
     onError: (error) => {
-      // console.log({ error }); // just for testing remove  it after
       toast.error(error.message);
     },
   });

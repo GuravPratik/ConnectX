@@ -1,6 +1,10 @@
 import { Box, Typography } from "@mui/material";
 
-function UserStats() {
+function UserStats({
+  numberOfPost = 0,
+  numberOfFollowers = 0,
+  numberOfFollow = 0,
+}) {
   return (
     <Box
       sx={{
@@ -10,19 +14,19 @@ function UserStats() {
     >
       <Typography component="p">
         <Typography variant="subtitle2" component="span">
-          10{" "}
+          {numberOfPost + " "}
         </Typography>
         posts
       </Typography>
       <Typography component="p">
         <Typography variant="subtitle2" component="span">
-          10{" "}
+          {numberOfFollowers + " "}
         </Typography>{" "}
         followers
       </Typography>
       <Typography component="p">
         <Typography variant="subtitle2" component="span">
-          10{" "}
+          {numberOfFollow + " "}
         </Typography>{" "}
         following
       </Typography>

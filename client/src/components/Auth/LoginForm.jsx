@@ -117,7 +117,7 @@ export default function LoginForm() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Login In
+                Login
               </Button>
             )}
             <Grid container justifyContent="flex-end">

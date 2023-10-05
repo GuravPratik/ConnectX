@@ -50,7 +50,10 @@ const userSchema = new Schema({
         "https://res.cloudinary.com/diqgskxvi/image/upload/v1694346301/ConnectX/2048px-Windows_10_Default_Profile_Picture.svg_osfygk.png",
     },
   },
-  bio: String,
+  bio: {
+    type: String,
+    default: "",
+  },
   followings: [followerSchema],
   followers: [followerSchema],
   forgotPasswordToken: String,
@@ -70,6 +73,7 @@ userSchema.pre("save", async function (next) {
 
 // method is created to compare password
 userSchema.methods.isPasswordMatch = async function (userPassword) {
+  console.log(this.password);
   return await bcrypt.compare(userPassword, this.password);
 };
 

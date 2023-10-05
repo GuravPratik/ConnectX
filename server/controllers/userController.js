@@ -88,7 +88,9 @@ exports.login = async (req, res) => {
         error: "User not found ! Please first Sign up",
       });
     }
+
     const isPasswordMatch = await user.isPasswordMatch(password);
+    console.log(isPasswordMatch, password);
     if (!isPasswordMatch) {
       return res.status(403).json({
         error: "Password does not match! Please enter correct password",
@@ -412,7 +414,7 @@ exports.unfollow = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const user = await User.findById(id).select("-password -email ");
 
     if (user) {
@@ -424,7 +426,7 @@ exports.getUserById = async (req, res) => {
       return;
     }
 
-    res.status(200).json({
+    res.status(404).json({
       message: "User not found",
       success: false,
     });

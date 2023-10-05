@@ -16,7 +16,7 @@ export async function signUp({ userName, fullName, email, password }) {
         },
       }
     );
-
+    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
@@ -52,8 +52,54 @@ export async function getCurrentUser(token) {
         Token: token,
       },
     });
-    return data.user;
+    return data?.user;
   } catch (error) {
     throw new Error(error.response.data.message);
+  }
+}
+
+export async function logout() {
+  try {
+    const { data } = await axios.get("http://localhost:3001/api/v1/logout");
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response.data.message);
+  }
+}
+
+export async function updateUserDetails({ avatar, bio, fullName }) {
+  try {
+    const updateData = {};
+
+    if (avatar) {
+      updateData.avatar = avatar;
+    }
+    if (bio) {
+      updateData.bio = bio;
+    }
+
+    if (fullName) {
+      updateData.fullName = fullName;
+    }
+
+    const { data } = await axios.patch(
+      "http://localhost:3001/api/v1/updateProfile",
+      {
+        avatar: updateData.avatar,
+        bio: updateData.bio,
+        fullName: updateData.fullName,
+      },
+      {
+        headers: {
+          Token: localStorage.getItem("token") || "",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error("Error while updating profile");
   }
 }

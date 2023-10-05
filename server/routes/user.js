@@ -30,6 +30,6 @@ router.route("/users").get(searchUser);
 router.route("/follow").patch(isLoggedIn, follow);
 router.route("/unfollow").patch(isLoggedIn, unfollow);
 
-router.route("/user/details").get(getUserById);
+router.route("/user/details/:id").get(getUserById);
 
 module.exports = router;

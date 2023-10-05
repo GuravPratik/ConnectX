@@ -9,6 +9,9 @@ import {
 import { useForm } from "react-hook-form";
 import styled from "@emotion/styled";
 
+import { useUser } from "../Auth/useUser";
+import { useProfileUpdate } from "./useProfileUpdate";
+
 const StyledContainer = styled(Container)(() => ({
   display: "flex",
   flexDirection: "column",
@@ -40,16 +43,54 @@ const StyledForm = styled("form")(() => ({
 }));
 
 function EditUser() {
+  const { isLoading, data: currentUser, isError, error } = useUser();
+
+  /**
+   * TODO:
+   *   just refresh the page to remove previous type data
+   */
+
+  const { updateUserProfile, isUpdating } = useProfileUpdate();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   function handleOnSubmit(data) {
-    console.log(data.imageFile[0], data);
+    const updateData = {};
+    if (data.imageFile[0]) {
+      updateData.avatar = data.imageFile[0];
+    }
+    if (data.updatedBio !== currentUser.bio) {
+      updateData.bio = data.updatedBio;
+    }
+    if (data.fullName !== currentUser.fullName) {
+      updateData.fullName = data.fullName;
+    }
+
+    updateUserProfile(
+      {
+        avatar: updateData.avatar,
+        bio: updateData.bio,
+        fullName: updateData.fullName,
+      },
+      {
+        onSuccess: () => {
+          reset();
+        },
+      }
+    );
   }
 
+  if (isLoading) {
+    return <Box>Loading</Box>;
+  }
+
+  if (isError) {
+    return <>{error.message}</>;
+  }
   return (
     <StyledContainer>
       <Typography variant="h4" component="h1" sx={{ marginLeft: "10px" }}>
@@ -74,7 +115,7 @@ function EditUser() {
           <TextField
             id="username"
             placeholder="username"
-            defaultValue="username"
+            defaultValue={currentUser.userName}
             variant="outlined"
             disabled
             sx={{
@@ -88,8 +129,9 @@ function EditUser() {
           <TextField
             id="fullName"
             placeholder="fullName"
-            defaultValue="fullName"
+            defaultValue={currentUser.fullName}
             variant="outlined"
+            disabled={isUpdating}
             {...register("fullName", {
               maxLength: {
                 value: 30,
@@ -113,8 +155,9 @@ function EditUser() {
         <StyledBox>
           <StyledLabel htmlFor="caption">Bio</StyledLabel>
           <TextField
+            disabled={isUpdating}
             id="caption"
-            defaultValue="bio"
+            defaultValue={currentUser.bio || ""}
             multiline
             rows={4}
             placeholder="Write about yourself..."
@@ -139,9 +182,13 @@ function EditUser() {
         )}
         <Divider />
         <Box>
-          <Button variant="contained" type="submit">
-            Update
-          </Button>
+          {isUpdating ? (
+            <Button variant="contained">Updating</Button>
+          ) : (
+            <Button variant="contained" type="submit">
+              Update
+            </Button>
+          )}
         </Box>
       </StyledForm>
     </StyledContainer>

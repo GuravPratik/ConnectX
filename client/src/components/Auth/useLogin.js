@@ -12,7 +12,7 @@ export function useLogin() {
       localStorage.setItem("token", data.token);
       queryClient.setQueryData(["user"], data.user);
       toast.success(`Ready, set, go! Your digital journey starts now.`);
-      navigate("/");
+      navigate("/", { replace: true });
     },
     onError: (error) => {
       toast.error(error.message);

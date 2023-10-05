@@ -4,6 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import UserStats from "./UserStats";
 import UserAvatar from "./UserAvatar";
+import { useUser } from "../Auth/useUser";
 
 const StyledBox = styled(Box)(() => ({
   display: "flex",
@@ -44,9 +45,14 @@ const DetailBox = styled(Box)(() => ({
   flexDirection: "column",
 }));
 
-function UserDetails() {
-  const currentUserId = "1";
+function UserDetails({ user, totalPosts }) {
+  // get current user
+  const { data: currentUser } = useUser();
+  const currentUserId = currentUser._id;
   const { userId } = useParams();
+
+  const isOwner = currentUserId === userId;
+
   const navigate = useNavigate();
   function handleOnEditClick() {
     navigate("/setting");
@@ -55,20 +61,20 @@ function UserDetails() {
   return (
     <StyledBox>
       <LeftBox>
-        <UserAvatar />
+        <UserAvatar imageUrl={user.profilePic.imageUrl} />
       </LeftBox>
       <RightBox>
         <StateBox>
-          <Typography component="p">UserName</Typography>
+          <Typography component="p">{user.userName}</Typography>
           {/*
             TODO:
                 1) if user visiting their own profile instead of rendaring follow button show edit button and when user clicks on edit button show 
                 box or redirect to the edit page
-                to show box with form use dialog box from material ui
+                
           
           */}
 
-          {currentUserId === userId ? (
+          {isOwner ? (
             <Button
               variant="contained"
               size="small"
@@ -83,18 +89,21 @@ function UserDetails() {
           )}
         </StateBox>
         <StateBox>
-          <UserStats />
+          <UserStats
+            numberOfPost={totalPosts}
+            numberOfFollowers={user.followers.length}
+            numberOfFollow={user.followings.length}
+          />
         </StateBox>
         <DetailBox>
-          <Typography component="p">FullName</Typography>
+          <Typography component="p">{user.fullName}</Typography>
           <Typography
             component="p"
             style={{
               wordWrap: "break-word",
             }}
           >
-            Just checking if the bio appers good or not and if not fix it
-            otherwise keep as it is Just checking if the bio
+            {user.bio}
           </Typography>
         </DetailBox>
       </RightBox>

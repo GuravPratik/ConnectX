@@ -179,7 +179,7 @@ exports.getSinglePost = async (req, res) => {
 exports.getUsersAllPosts = async (req, res) => {
   try {
     const posts = await Post.find({
-      userId: req.user.id,
+      userId: req.params.userId,
     });
 
     res.status(200).json({

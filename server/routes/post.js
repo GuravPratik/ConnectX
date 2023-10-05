@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.route("/posts").get(isLoggedIn, getPost);
 router.route("/post/:postId").get(isLoggedIn, getSinglePost);
-router.route("/user/posts").get(isLoggedIn, getUsersAllPosts);
+router.route("/user/posts/:userId").get(isLoggedIn, getUsersAllPosts);
 router.route("/post").post(isLoggedIn, createPost);
 router.route("/post/:postId").patch(isLoggedIn, updatePost);
 router.route("/post/like/:postId").patch(isLoggedIn, likePost);

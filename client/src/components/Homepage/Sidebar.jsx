@@ -13,8 +13,12 @@ import {
 } from "@mui/material";
 import SidebarItem from "./SidebarItem";
 import { Link } from "react-router-dom";
+import { useLogout } from "../Auth/useLogout";
+import { useUser } from "../Auth/useUser";
 
 const Sidebar = () => {
+  const { logout, isLoading } = useLogout();
+  const { data } = useUser();
   return (
     <Box flex={1} p={2}>
       <Box
@@ -39,12 +43,17 @@ const Sidebar = () => {
           <SidebarItem icon={<SearchIcon />} url="/search" name="Search" />
           <SidebarItem icon={<AddIcon />} url="/create" name="Create" />
 
-          <SidebarItem icon={<AccountBox />} url="/profile/1" name="Profile" />
+          <SidebarItem
+            icon={<AccountBox />}
+            url={`profile/${data._id}`}
+            name="Profile"
+          />
           <SidebarItem icon={<Settings />} url="/setting" name="Settings" />
           <ListItem disablePadding>
             <ListItemButton
               component="button"
-              onClick={() => console.log("click")}
+              onClick={() => logout()}
+              disabled={isLoading}
             >
               <ListItemIcon>
                 <LogoutIcon />
