@@ -8,8 +8,9 @@ exports.signUp = async (req, res) => {
   const { userName, fullName, email, password } = req.body;
   // check if the all info is present or not
   if (!userName || !fullName || !email || !password) {
-    return res.json({
-      message: "Please provide all fields",
+    return res.status(400).json({
+      error: "Please provide all fields",
+      success: false,
     });
   }
 
@@ -47,14 +48,17 @@ exports.signUp = async (req, res) => {
     if (error.code === 11000 && error.keyPattern.userName === 1) {
       res.status(400).json({
         error: "Username already exists. Please choose a different username.",
+        success: false,
       });
     } else if (error.code === 11000 && error.keyPattern.email === 1) {
       res.status(400).json({
         error: "User already exists. Please choose a different email.",
+        success: false,
       });
     } else if (error.errors && error.errors.password) {
-      res.status(500).json({
+      res.status(400).json({
         error: error.errors.password.message,
+        success: false,
       });
     } else {
       console.log(error);
@@ -71,7 +75,7 @@ exports.login = async (req, res) => {
   if (!(userName && password)) {
     return res.status(400).json({
       success: false,
-      message: "Please provide userName and password",
+      error: "Please provide userName and password",
     });
   }
 
@@ -81,13 +85,13 @@ exports.login = async (req, res) => {
     }).select("+password");
     if (!user) {
       return res.status(403).json({
-        message: "User not found ! Please first Sign up",
+        error: "User not found ! Please first Sign up",
       });
     }
     const isPasswordMatch = await user.isPasswordMatch(password);
     if (!isPasswordMatch) {
       return res.status(403).json({
-        message: "Password does not match! Please enter correct password",
+        error: "Password does not match! Please enter correct password",
         success: false,
       });
     }
@@ -95,7 +99,7 @@ exports.login = async (req, res) => {
     cookieToken(user, res);
   } catch (error) {
     res.status(500).json({
-      message: "Error while login! Please try again after some time",
+      error: "Error while login! Please try again after some time",
       success: false,
     });
   }
@@ -121,7 +125,7 @@ exports.forgotPassword = async (req, res) => {
   if (!user) {
     return res.status(400).json({
       success: false,
-      message: `You don't have an account Please first create a account`,
+      error: `You don't have an account Please first create a account`,
     });
   }
 
@@ -159,7 +163,7 @@ exports.forgotPassword = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Error while sending a mail",
+      error: "Error while sending a mail",
     });
   }
 };
@@ -183,14 +187,14 @@ exports.resetPassword = async (req, res) => {
     if (!user) {
       return res.status(400).json({
         success: false,
-        message: "Token is invalid or expired",
+        error: "Token is invalid or expired",
       });
     }
 
     if (req.body.password !== req.body.confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: "Password and confirm password does not match",
+        error: "Password and confirm password does not match",
       });
     }
 
@@ -207,7 +211,7 @@ exports.resetPassword = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      error: "Internal server error",
     });
   }
 };
@@ -262,7 +266,7 @@ exports.updateUserDetails = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      error: "Internal server error",
       success: false,
     });
   }
@@ -278,7 +282,7 @@ exports.updatePassword = async (req, res) => {
     if (!isOldPasswordMatch) {
       return res.status(401).json({
         success: false,
-        message: "Please enter correct old Password",
+        error: "Please enter correct old Password",
       });
     }
     // update password with new password
@@ -290,7 +294,7 @@ exports.updatePassword = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      message: "Internal server error",
+      error: "Internal server error",
       success: false,
     });
   }
@@ -358,7 +362,7 @@ exports.follow = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Internal server error",
+      error: "Internal server error",
       success: false,
     });
   }
@@ -400,7 +404,7 @@ exports.unfollow = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Internal server error",
+      error: "Internal server error",
       success: false,
     });
   }
@@ -427,7 +431,7 @@ exports.getUserById = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Internal server error",
+      error: "Internal server error",
       success: false,
     });
   }
@@ -450,7 +454,7 @@ exports.searchUser = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Error while searching user",
+      error: "Error while searching user",
       success: false,
     });
   }
