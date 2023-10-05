@@ -14,6 +14,8 @@ import Settings from "./pages/Settings";
 import Search from "./pages/Search";
 import Signup from "./pages/Signup";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -62,9 +64,18 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
+});
+
 export default function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       <RouterProvider router={router} />
       <Toaster
         position="top-center"
@@ -86,6 +97,6 @@ export default function App() {
           },
         }}
       />
-    </>
+    </QueryClientProvider>
   );
 }

@@ -19,6 +19,5 @@ exports.isLoggedIn = async (req, res, next) => {
       success: false,
       message: "Please authenticate using a valid token",
     });
-    console.log(error);
   }
 };

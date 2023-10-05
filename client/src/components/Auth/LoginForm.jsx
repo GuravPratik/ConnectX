@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import Copyright from "./Copyright";
+import { useLogin } from "./useLogin";
+import { CircularProgress } from "@mui/material";
 export default function LoginForm() {
   const {
     register,
@@ -21,8 +23,13 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { login, isLoading } = useLogin();
+
+  const onSubmit = ({ userName, password }) => {
+    login({
+      userName,
+      password,
+    });
   };
 
   return (
@@ -94,14 +101,25 @@ export default function LoginForm() {
                 )}
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Login in
-            </Button>
+            {isLoading ? (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                <CircularProgress color="inherit" />
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Login In
+              </Button>
+            )}
             <Grid container justifyContent="flex-end">
               <Grid item xs>
                 <Link to="/forgotpassword">Forgot Password?</Link>

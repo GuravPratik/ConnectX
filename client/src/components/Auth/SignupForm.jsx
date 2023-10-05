@@ -1,5 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 
@@ -14,7 +15,9 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import Copyright from "./Copyright";
+import { useSignup } from "./useSignup";
 export default function SignUpForm() {
+  const { signUp, isLoading } = useSignup();
   const {
     register,
     handleSubmit,
@@ -22,8 +25,13 @@ export default function SignUpForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = ({ userName, fullName, email, password }) => {
+    signUp({
+      userName,
+      fullName,
+      email,
+      password,
+    });
   };
 
   return (
@@ -89,7 +97,10 @@ export default function SignUpForm() {
                   label="Email Address"
                   {...register("email", {
                     required: true,
-                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Please provide valid email",
+                    },
                   })}
                 />
                 {errors.email?.type === "required" && (
@@ -99,13 +110,7 @@ export default function SignUpForm() {
                     </Typography>
                   </Box>
                 )}
-                {errors.email?.type === "pattern" && (
-                  <Box>
-                    <Typography component="p" color="#d50000">
-                      Please provide valid email
-                    </Typography>
-                  </Box>
-                )}
+
                 {errors.email && (
                   <Box>
                     <Typography component="p" color="#d50000">
@@ -145,14 +150,26 @@ export default function SignUpForm() {
                 )}
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
+            {isLoading ? (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                <CircularProgress color="inherit" />
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign Up
+              </Button>
+            )}
+
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/login">Already have an account? Sign in</Link>

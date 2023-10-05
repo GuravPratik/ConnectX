@@ -2,7 +2,6 @@ import { AccountBox, Home, Settings } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoutIcon from "@mui/icons-material/Logout";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import {
   Box,
   List,
@@ -39,11 +38,7 @@ const Sidebar = () => {
           <SidebarItem icon={<Home />} url="/" name="Home" />
           <SidebarItem icon={<SearchIcon />} url="/search" name="Search" />
           <SidebarItem icon={<AddIcon />} url="/create" name="Create" />
-          <SidebarItem
-            icon={<NotificationsNoneIcon />}
-            url="/notifications"
-            name="Notifications"
-          />
+
           <SidebarItem icon={<AccountBox />} url="/profile/1" name="Profile" />
           <SidebarItem icon={<Settings />} url="/setting" name="Settings" />
           <ListItem disablePadding>
