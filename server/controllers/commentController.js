@@ -33,10 +33,10 @@ exports.fetchComments = async (req, res) => {
     const postId = req.params.postId;
     const comment = await Comment.find({
       postId,
-    }).populate("userId", "id userName fullName");
+    }).populate("userId", "id userName fullName profilePic");
 
     res.status(200).json({
-      message: "comment is added",
+      message: "comment is fetch",
       success: true,
       comment,
     });
