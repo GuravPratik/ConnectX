@@ -16,12 +16,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { formatDateFromNow } from "../../utils/helper";
-
-// Homepage post component
+import { useUser } from "../Auth/useUser";
 
 export default function Post({ post }) {
-  // TODO: delete it
-  const userId = "65069b176fee902589df976a";
+  /**
+   * TODO:
+   *  1) Allow user to like or dislike post
+   *
+   */
+
+  const { data: currentUser } = useUser();
+
+  const userId = currentUser?._id;
 
   const [isLike, setIsLike] = useState(
     post.likesId.some((like) => like.userId === userId)
@@ -30,11 +36,6 @@ export default function Post({ post }) {
   function handlePostClick() {
     navigate(`/posts/${post._id}`);
   }
-
-  //   useEffect(() => {
-  //     const result = post.likesId.some((like) => like.userId === userId);
-  //     setIsLike(result);
-  //   }, [post]);
 
   return (
     <Card sx={{ maxwidth: 450, minWidth: 400 }}>
@@ -46,10 +47,7 @@ export default function Post({ post }) {
           color: "#616161",
         }}
         avatar={
-          <Avatar
-            src="https://res.cloudinary.com/diqgskxvi/image/upload/v1694346301/ConnectX/2048px-Windows_10_Default_Profile_Picture.svg_osfygk.png"
-            alt="profilePic"
-          />
+          <Avatar src={post.userId.profilePic.imageUrl} alt="profilePic" />
         }
         title={post.userId.userName}
         subheader={`${formatDateFromNow(post.createdAt)} ago`}
@@ -71,7 +69,7 @@ export default function Post({ post }) {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton
-          aria-label="add to favorites"
+          aria-label="Like"
           onClick={() => {
             setIsLike((prevState) => !prevState);
           }}

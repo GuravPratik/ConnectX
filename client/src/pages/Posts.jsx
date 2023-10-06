@@ -15,8 +15,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 import { ScrollRestoration, useParams } from "react-router-dom";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import UserProfile from "../components/UserProfile";
 import CommentList from "../components/Comments/CommentList";
@@ -24,42 +23,25 @@ import CommentBox from "../components/Comments/CommentBox";
 import EditForm from "../components/EditForm";
 import PostAction from "../components/Posts/PostAction";
 import { formatDateFromNow } from "../utils/helper";
-
-const postData = {
-  imageInfo: {
-    id: "ConnectX/Posts/dgxqfdg1in90upnfeaii",
-    secureUrl:
-      "https://res.cloudinary.com/diqgskxvi/image/upload/v1695125210/ConnectX/Posts/dgxqfdg1in90upnfeaii.jpg",
-  },
-  _id: "65098ed3c28eaeb46a48da91",
-  userId: {
-    _id: "65069b176fee902589df976a",
-    userName: "testUser2",
-    fullName: "TestUser2",
-    profilePic:
-      "https://res.cloudinary.com/diqgskxvi/image/upload/v1694931762/ConnectX/Users/f5occh3cdepzjxdpbz9y.jpg",
-  },
-  caption: "New Caption Test 2",
-  likesId: [
-    {
-      userId: "65069b176fee902589df976a",
-      userName: "testUser2",
-      fullName: "TestUser2",
-      _id: "650c5be55b589fa762d0cf85",
-    },
-  ],
-  createdAt: "2023-09-19T12:06:43.164Z",
-  __v: 9,
-  updatedAt: "2023-09-19T12:23:12.220Z",
-};
+import { useUser } from "../components/Auth/useUser";
+import { usePostById } from "../components/Posts/usePost";
 
 function Posts() {
-  const userId = "65069b176fee902589df976a";
-  const isOwner = userId === postData.userId._id;
   const { postId } = useParams();
-  const [isLike, setIsLike] = useState(
-    postData.likesId.some((like) => like.userId === userId)
-  );
+
+  const { data: currentUser } = useUser();
+  // const userId = currentUser?._id;
+  const { isLoading, postData, isError, error } = usePostById(postId);
+
+  const [isLike, setIsLike] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && !isError) {
+      setIsLike(
+        postData.likesId.some((like) => like.userId === currentUser._id)
+      );
+    }
+  }, [currentUser._id, isError, isLoading, postData]);
 
   function updatePostCaption(data) {
     // get updated data
@@ -68,6 +50,42 @@ function Posts() {
   }
 
   const [isPostEdit, setIsPostEdit] = useState(false);
+
+  if (isLoading) {
+    return (
+      <Box
+        flexGrow={3}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        Loading...
+      </Box>
+    );
+  }
+
+  // if post not found
+  if (isError) {
+    return (
+      <Box
+        flexGrow={3}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Typography component="h2" variant="h6">
+          {error.message}
+        </Typography>
+      </Box>
+    );
+  }
+  const isOwner = currentUser?._id === postData.userId._id;
 
   return (
     <>
@@ -151,11 +169,7 @@ function Posts() {
               <Typography sx={{ marginRight: "5px" }}>
                 {postData.likesId.length} Likes
               </Typography>
-              <IconButton
-                aria-label="share"
-                component={Link}
-                to={`/posts/${postData._id}`}
-              >
+              <IconButton aria-label="share">
                 <CommentIcon />
               </IconButton>
               <Typography sx={{ marginRight: "5px" }}>0 comments</Typography>
