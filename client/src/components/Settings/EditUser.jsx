@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Divider,
   TextField,
@@ -183,7 +184,9 @@ function EditUser() {
         <Divider />
         <Box>
           {isUpdating ? (
-            <Button variant="contained">Updating</Button>
+            <Button variant="contained">
+              <CircularProgress color="inherit" />
+            </Button>
           ) : (
             <Button variant="contained" type="submit">
               Update

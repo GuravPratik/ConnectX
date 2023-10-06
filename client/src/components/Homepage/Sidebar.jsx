@@ -45,7 +45,7 @@ const Sidebar = () => {
 
           <SidebarItem
             icon={<AccountBox />}
-            url={`profile/${data._id}`}
+            url={`profile/${data?._id}`}
             name="Profile"
           />
           <SidebarItem icon={<Settings />} url="/setting" name="Settings" />

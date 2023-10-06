@@ -4,8 +4,13 @@ import { getCurrentUser } from "../../services/apiAuth";
 export function useUser() {
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ["currentUser"],
-    queryFn: () => getCurrentUser(localStorage.getItem("token") || ""),
+    queryFn: getCurrentUser,
   });
 
-  return { isLoading, data, isError, error };
+  return {
+    isLoading,
+    data,
+    isError,
+    error,
+  };
 }

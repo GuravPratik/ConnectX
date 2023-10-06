@@ -1,10 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import { Box, Button, Typography } from "@mui/material";
 import styled from "@emotion/styled";
 import UserStats from "./UserStats";
 import UserAvatar from "./UserAvatar";
 import { useUser } from "../Auth/useUser";
+import { getJoinedDate } from "../../utils/helper";
 
 const StyledBox = styled(Box)(() => ({
   display: "flex",
@@ -97,6 +99,18 @@ function UserDetails({ user, totalPosts }) {
         </StateBox>
         <DetailBox>
           <Typography component="p">{user.fullName}</Typography>
+          <Typography
+            component="p"
+            sx={{
+              margin: "2px 0",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}
+          >
+            <CalendarMonthOutlinedIcon />
+            Joined {getJoinedDate(user.createdAt)}
+          </Typography>
           <Typography
             component="p"
             style={{

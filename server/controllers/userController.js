@@ -243,8 +243,10 @@ exports.updateUserDetails = async (req, res) => {
         newProfilePic.tempFilePath,
         {
           folder: "ConnectX/Users",
-          width: 150,
-          crop: "scale",
+
+          transformation: [
+            { width: 250, height: 250, gravity: "auto", crop: "fill" },
+          ],
         }
       );
 

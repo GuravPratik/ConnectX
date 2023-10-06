@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Divider,
   TextField,
@@ -8,6 +9,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import styled from "@emotion/styled";
+import toast from "react-hot-toast";
+import { usePasswordUpdate } from "./usePasswordUpdate";
 
 const StyledContainer = styled(Container)(() => ({
   display: "flex",
@@ -40,27 +43,42 @@ const StyledForm = styled("form")(() => ({
 }));
 
 function EditPassword() {
+  const { updateUserPassword, isLoading: isPasswordUpdating } =
+    usePasswordUpdate();
+
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
+    reset,
   } = useForm();
 
-  function handleOnSubmit(data) {
-    if (data.password === "") {
-      alert("Please enter password");
+  function handleOnSubmit({ newPassword, oldPassword, confirmPassword }) {
+    if (!newPassword || !oldPassword || !confirmPassword) {
+      toast.error("Please enter all the password fields to update password");
       return;
     }
 
-    if (data.password !== data.confirmPassword) {
+    if (newPassword !== confirmPassword) {
       setError("confirmPassword", {
         type: "passwordNotMatch",
-        message: "Password do not match",
+        message: "New Password and Confirm Password do not match",
       });
       return;
     }
-    console.log(data);
+
+    updateUserPassword(
+      {
+        oldPassword,
+        newPassword,
+      },
+      {
+        onSettled: () => {
+          reset();
+        },
+      }
+    );
   }
 
   return (
@@ -70,13 +88,13 @@ function EditPassword() {
       </Typography>
       <StyledForm onSubmit={handleSubmit(handleOnSubmit)}>
         <StyledBox>
-          <StyledLabel htmlFor="newPassword">New Password</StyledLabel>
+          <StyledLabel htmlFor="oldPassword">Old Password</StyledLabel>
           <TextField
-            id="newPassword"
+            id="oldPassword"
             type="password"
-            placeholder="new password"
+            placeholder="old password"
             variant="outlined"
-            {...register("password", {
+            {...register("oldPassword", {
               minLength: {
                 value: 8,
                 message: "Password should be greater than 8 characters",
@@ -87,10 +105,36 @@ function EditPassword() {
             }}
           />
         </StyledBox>
-        {errors.password && (
+        {errors.oldPassword && (
           <Box>
             <Typography component="p" color="#d50000">
-              {errors.password.message}
+              {errors.oldPassword.message}
+            </Typography>
+          </Box>
+        )}
+        <Divider />
+        <StyledBox>
+          <StyledLabel htmlFor="newPassword">New Password</StyledLabel>
+          <TextField
+            id="newPassword"
+            type="password"
+            placeholder="new password"
+            variant="outlined"
+            {...register("newPassword", {
+              minLength: {
+                value: 8,
+                message: "Password should be greater than 8 characters",
+              },
+            })}
+            sx={{
+              width: "80%",
+            }}
+          />
+        </StyledBox>
+        {errors.newPassword && (
+          <Box>
+            <Typography component="p" color="#d50000">
+              {errors.newPassword.message}
             </Typography>
           </Box>
         )}
@@ -122,9 +166,15 @@ function EditPassword() {
         )}
         <Divider />
         <Box>
-          <Button variant="contained" type="submit">
-            Update Password
-          </Button>
+          {isPasswordUpdating ? (
+            <Button variant="contained">
+              <CircularProgress color="inherit" />
+            </Button>
+          ) : (
+            <Button variant="contained" type="submit">
+              Update Password
+            </Button>
+          )}
         </Box>
       </StyledForm>
     </StyledContainer>

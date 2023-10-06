@@ -40,21 +40,20 @@ export async function login({ userName, password }) {
     );
     return data;
   } catch (error) {
-    console.log(error);
     throw new Error(error.response.data.error);
   }
 }
 
-export async function getCurrentUser(token) {
+export async function getCurrentUser() {
   try {
     const { data } = await axios.get("http://localhost:3001/api/v1/user", {
       headers: {
-        Token: token,
+        Token: localStorage.getItem("token") || "",
       },
     });
-    return data?.user;
+    return data.user;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    throw new Error(error.response.data.message || "Please login to access...");
   }
 }
 
@@ -100,6 +99,34 @@ export async function updateUserDetails({ avatar, bio, fullName }) {
 
     return data;
   } catch (error) {
-    throw new Error("Error while updating profile");
+    throw new Error(
+      error.response.data.message || "Error while updating profile"
+    );
+  }
+}
+
+export async function updateLoggedUserPassword({ oldPassword, newPassword }) {
+  try {
+    const { data } = await axios.patch(
+      `http://localhost:3001/api/v1/password/update`,
+      {
+        oldPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          Token: localStorage.getItem("token") || "",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.error ||
+        error.response.data.message ||
+        "Error while updating password"
+    );
   }
 }
