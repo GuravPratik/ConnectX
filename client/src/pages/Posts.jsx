@@ -25,15 +25,21 @@ import PostAction from "../components/Posts/PostAction";
 import { formatDateFromNow } from "../utils/helper";
 import { useUser } from "../components/Auth/useUser";
 import { usePostById } from "../components/Posts/usePost";
+import { useCommentById } from "../components/Comments/useComment";
 
 function Posts() {
   const { postId } = useParams();
 
   const { data: currentUser } = useUser();
-  // const userId = currentUser?._id;
   const { isLoading, postData, isError, error } = usePostById(postId);
+  const {
+    isLoading: isCommentsLoading,
+    comments,
+    isError: isCommentError,
+  } = useCommentById(postId);
 
   const [isLike, setIsLike] = useState(false);
+  const [isPostEdit, setIsPostEdit] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isError) {
@@ -48,8 +54,6 @@ function Posts() {
     console.log(data);
     setIsPostEdit(false);
   }
-
-  const [isPostEdit, setIsPostEdit] = useState(false);
 
   if (isLoading) {
     return (
@@ -86,7 +90,6 @@ function Posts() {
     );
   }
   const isOwner = currentUser?._id === postData.userId._id;
-
   return (
     <>
       <Box
@@ -133,7 +136,7 @@ function Posts() {
                 maxHeight: "500px",
               }}
               component="img"
-              src="https://res.cloudinary.com/diqgskxvi/image/upload/v1695125210/ConnectX/Posts/dgxqfdg1in90upnfeaii.jpg"
+              src={postData.imageInfo.secureUrl}
             />
             <CardContent>
               {!isPostEdit ? (
@@ -172,14 +175,14 @@ function Posts() {
               <IconButton aria-label="share">
                 <CommentIcon />
               </IconButton>
-              <Typography sx={{ marginRight: "5px" }}>0 comments</Typography>
+              {!isCommentsLoading && !isCommentError && (
+                <Typography sx={{ marginRight: "5px" }}>
+                  {comments.length} comments
+                </Typography>
+              )}
             </CardActions>
           </Card>
           <Container>
-            {/*
-            TODO: 
-             send post id as a prop to the comment list component
-            */}
             <CommentList />
             <CommentBox />
           </Container>

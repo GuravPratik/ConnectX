@@ -9,9 +9,12 @@ import EditOutlined from "@mui/icons-material/EditOutlined";
 import { useState } from "react";
 import { formatDateFromNow } from "../../utils/helper";
 import EditForm from "../EditForm";
+import { useUser } from "../Auth/useUser";
 
 function CommentCard({ comment }) {
-  const userId = "65069b176fee902589df976a";
+  const { data: currentUser } = useUser();
+
+  const userId = currentUser._id;
   const [isEditMode, setIsEditMode] = useState(false);
   const isOwner = userId === comment.userId._id;
 
@@ -26,8 +29,8 @@ function CommentCard({ comment }) {
         <Avatar
           component={Link}
           to={`/profile/${comment.userId._id}`}
-          alt="Remy Sharp"
-          src="https://res.cloudinary.com/diqgskxvi/image/upload/v1694931762/ConnectX/Users/f5occh3cdepzjxdpbz9y.jpg"
+          alt={`${comment.userId.fullName} Profile Pic`}
+          src={comment.userId.profilePic.imageUrl}
         />
       </ListItemAvatar>
       <Box

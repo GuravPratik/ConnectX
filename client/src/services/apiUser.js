@@ -32,3 +32,15 @@ export async function fetchUserPosts(userId, token) {
     throw new Error(error.response.data.message);
   }
 }
+
+export async function getRandomUsers() {
+  try {
+    const { data } = await axios.get(
+      "http://localhost:3001/api/v1/user/getRandom"
+    );
+
+    return data.randomUsers;
+  } catch (error) {
+    throw new Error(error.response.data.error || "Error fetching Random users");
+  }
+}

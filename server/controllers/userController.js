@@ -463,3 +463,30 @@ exports.searchUser = async (req, res) => {
     });
   }
 };
+
+exports.fetchRandomUsers = async (req, res) => {
+  try {
+    const randomUsers = await User.aggregate([
+      { $sample: { size: 5 } },
+      {
+        $project: {
+          _id: 1,
+          userName: 1,
+          fullName: 1,
+          profilePic: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      message: "User fetch successfully",
+      randomUsers,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error fetching random users",
+      success: false,
+    });
+  }
+};

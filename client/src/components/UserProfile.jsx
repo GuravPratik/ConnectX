@@ -3,18 +3,15 @@ import { Link } from "react-router-dom";
 function UserProfile({ user }) {
   return (
     <ListItem>
-      <ListItemButton component={Link} to={`/profile/${user.id || user._id}`}>
+      <ListItemButton component={Link} to={`/profile/${user._id}`}>
         <Avatar
-          alt={user.name ? user.name : user.userName}
-          src={user.dpUrl || user.profilePic.imageUrl}
+          alt={user.userName}
+          src={user.profilePic.imageUrl}
           sx={{
             marginRight: "7px",
           }}
         />
-        <ListItemText
-          primary={user.name ? user.name : user.userName}
-          secondary={user.fullName}
-        />
+        <ListItemText primary={user.userName} secondary={user.fullName} />
       </ListItemButton>
     </ListItem>
   );

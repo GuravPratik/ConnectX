@@ -12,6 +12,7 @@ const {
   unfollow,
   getUserById,
   searchUser,
+  fetchRandomUsers,
 } = require("../controllers/userController");
 const { isLoggedIn } = require("../middlewares/auth");
 const router = express.Router();
@@ -31,5 +32,7 @@ router.route("/follow").patch(isLoggedIn, follow);
 router.route("/unfollow").patch(isLoggedIn, unfollow);
 
 router.route("/user/details/:id").get(getUserById);
+
+router.route("/user/getRandom").get(fetchRandomUsers);
 
 module.exports = router;
