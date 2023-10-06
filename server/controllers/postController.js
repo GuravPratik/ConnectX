@@ -4,9 +4,12 @@ const cloudinary = require("cloudinary").v2;
 
 exports.getPost = async (req, res) => {
   try {
-    const posts = await Post.find().populate("userId", "id userName fullName");
+    const posts = await Post.find().populate(
+      "userId",
+      "id userName fullName profilePic"
+    );
     res.json({
-      message: "Post get route",
+      message: "All posts are fetch",
       posts,
     });
   } catch (error) {
@@ -154,7 +157,7 @@ exports.getSinglePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.postId).populate(
       "userId",
-      "id userName fullName"
+      "id userName fullName profilePic"
     );
     if (!post) {
       return res.status(404).json({
