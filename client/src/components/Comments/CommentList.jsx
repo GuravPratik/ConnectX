@@ -61,7 +61,7 @@ function CommentList() {
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            No comments yet. Be the first to comment!
+            No comments yet. Be the first to comment!😊
           </Typography>
         </Box>
       ) : (

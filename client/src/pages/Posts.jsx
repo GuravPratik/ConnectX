@@ -26,12 +26,16 @@ import { formatDateFromNow } from "../utils/helper";
 import { useUser } from "../components/Auth/useUser";
 import { usePostById } from "../components/Posts/usePost";
 import { useCommentById } from "../components/Comments/useComment";
+import { usePostEdit } from "../components/Posts/usePostEdit";
 
 function Posts() {
   const { postId } = useParams();
 
   const { data: currentUser } = useUser();
   const { isLoading, postData, isError, error } = usePostById(postId);
+
+  const { updatePost, isUpdating } = usePostEdit();
+
   const {
     isLoading: isCommentsLoading,
     comments,
@@ -50,8 +54,7 @@ function Posts() {
   }, [currentUser._id, isError, isLoading, postData]);
 
   function updatePostCaption(data) {
-    // get updated data
-    console.log(data);
+    updatePost({ postId: postData._id, caption: data });
     setIsPostEdit(false);
   }
 
@@ -150,6 +153,7 @@ function Posts() {
                 </>
               ) : (
                 <EditForm
+                  isUpdating={isUpdating}
                   updateFunction={updatePostCaption}
                   stateFunction={setIsPostEdit}
                   defaultValue={postData.caption}
@@ -158,7 +162,7 @@ function Posts() {
             </CardContent>
             <CardActions disableSpacing>
               <IconButton
-                aria-label="add to favorites"
+                aria-label="Like"
                 onClick={() => {
                   setIsLike((prevState) => !prevState);
                 }}

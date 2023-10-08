@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import styled from "@emotion/styled";
+import { useCreatePost } from "./useCreatePost";
 
 const StyledContainer = styled(Container)(() => ({
   display: "flex",
@@ -39,6 +40,8 @@ const StyledForm = styled("form")(() => ({
 }));
 
 function PostForm() {
+  const { createPost, isLoading } = useCreatePost();
+
   const {
     register,
     handleSubmit,
@@ -46,7 +49,10 @@ function PostForm() {
   } = useForm();
 
   function handleOnSubmit(data) {
-    console.log(data.imageFile[0], data.caption);
+    createPost({
+      postImage: data.imageFile[0],
+      caption: data.caption,
+    });
   }
 
   return (
@@ -102,10 +108,10 @@ function PostForm() {
           </Box>
         )}
         <Divider />
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={isLoading}>
           Share
         </Button>
-        <Button variant="contained" type="reset">
+        <Button variant="contained" type="reset" disabled={isLoading}>
           reset
         </Button>
       </StyledForm>

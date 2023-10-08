@@ -34,3 +34,62 @@ export async function fetchPostUsingId(postId) {
     );
   }
 }
+
+export async function createPost({ postImage, caption }) {
+  try {
+    const { data } = await axios.post(
+      `http://localhost:3001/api/v1/post`,
+      {
+        postImage,
+        caption,
+      },
+      {
+        headers: {
+          Token: localStorage.getItem("token") || "",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(error.response.data.message || "Error while creating post");
+  }
+}
+
+export async function updatePostUsingId({ postId, caption }) {
+  try {
+    const { data } = await axios.patch(
+      `http://localhost:3001/api/v1/post/${postId}`,
+      {
+        caption: caption,
+      },
+      {
+        headers: {
+          Token: localStorage.getItem("token") || "",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(error.response.data.message || "Error while updating post");
+  }
+}
+
+export async function deletePostUsingId(postId) {
+  try {
+    const { data } = await axios.delete(
+      `http://localhost:3001/api/v1/post/${postId}`,
+      {
+        headers: {
+          Token: localStorage.getItem("token") || "",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(error.response.data.message || "Error while deleting post");
+  }
+}

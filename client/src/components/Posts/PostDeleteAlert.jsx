@@ -7,17 +7,32 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../Auth/useUser";
+import { usePostDelete } from "./usePostDelete";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function PostDeleteAlert({ handleClose, open, postId }) {
+  const { data: currentUser } = useUser();
+  const { deletPost, isLoading: isDeleting } = usePostDelete();
+  const navigate = useNavigate();
+
   function deletePost(postId) {
-    console.log(`Post with ${postId} deleted`);
+    deletPost(postId, {
+      onSuccess: () => {
+        navigate(`/profile/${currentUser._id}`);
+      },
+      onError: () => {
+        handleClose();
+      },
+    });
+
     // TODO:
     // 1) instead of closing post make api request to delete the post and show deleting icon
-    //    on successfully api request navigate user to homepage use useNavigate from react-router-dom
-    handleClose();
+    //    on successfully api request navigate user to profile use useNavigate from react-router-dom
   }
 
   return (
@@ -40,13 +55,16 @@ export default function PostDeleteAlert({ handleClose, open, postId }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose} disabled={isDeleting}>
+            Cancel
+          </Button>
           <Button
+            disabled={isDeleting}
             onClick={() => {
               deletePost(postId);
             }}
           >
-            Confirm
+            {!isDeleting ? `Confirm` : `Deleting...`}
           </Button>
         </DialogActions>
       </Dialog>

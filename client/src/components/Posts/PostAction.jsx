@@ -6,7 +6,6 @@ import { useState } from "react";
 function PostAction({ setIsPostEdit, postId }) {
   const [open, setOpen] = useState(false);
   function handleClose() {
-    console.log("Post delete alert close");
     setOpen(false);
   }
 
