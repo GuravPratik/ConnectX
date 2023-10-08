@@ -63,7 +63,13 @@ export default function Post({ post }) {
         alt="post Image"
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            maxWidth: "350px",
+          }}
+        >
           {post.caption}
         </Typography>
       </CardContent>

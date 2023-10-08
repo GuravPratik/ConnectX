@@ -10,17 +10,24 @@ import { useState } from "react";
 import { formatDateFromNow } from "../../utils/helper";
 import EditForm from "../EditForm";
 import { useUser } from "../Auth/useUser";
+import { useEditComment } from "./useEditComment";
 
 function CommentCard({ comment }) {
   const { data: currentUser } = useUser();
-
+  const { isLoading, editComment } = useEditComment();
   const userId = currentUser._id;
   const [isEditMode, setIsEditMode] = useState(false);
   const isOwner = userId === comment.userId._id;
 
   function updateFunction(data) {
-    console.log(data);
-    setIsEditMode(false);
+    editComment(
+      { commentId: comment._id, content: data },
+      {
+        onSettled: () => {
+          setIsEditMode(false);
+        },
+      }
+    );
   }
 
   return (
@@ -70,12 +77,17 @@ function CommentCard({ comment }) {
                 defaultValue={comment.content}
                 updateFunction={updateFunction}
                 stateFunction={setIsEditMode}
+                isUpdating={isLoading}
               />
             </>
           )}
         </Box>
         {isOwner && !isEditMode && (
-          <Button size="small" onClick={() => setIsEditMode(true)}>
+          <Button
+            size="small"
+            onClick={() => setIsEditMode(true)}
+            disabled={isLoading}
+          >
             <EditOutlined fontSize="small" />
           </Button>
         )}

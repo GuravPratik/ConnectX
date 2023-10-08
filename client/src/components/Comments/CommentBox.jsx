@@ -1,19 +1,23 @@
 import { Box, Button, Container, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { useCreateComment } from "./useCreateComment";
+import { useParams } from "react-router-dom";
 function CommentBox() {
-  const { register, watch, setValue, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    console.log(data.comment);
+  const { addComment, isLoading } = useCreateComment();
 
-    // removing value on success api call
-    setValue("comment", "");
+  const { register, watch, setValue, handleSubmit } = useForm();
+  const { postId } = useParams();
+  const onSubmit = (data) => {
+    addComment(
+      { postId, content: data.comment },
+      {
+        onSuccess: () => {
+          setValue("comment", "");
+        },
+      }
+    );
   };
-  /**
-   * TODO:
-   *
-   *  1) When user clicks on comment empty text field
-   *
-   */
+
   return (
     <Box>
       <Container>
@@ -26,6 +30,7 @@ function CommentBox() {
           }}
         >
           <TextField
+            disabled={isLoading}
             placeholder="Add a comment"
             id="outlined-basic"
             label="Comment"
@@ -37,7 +42,7 @@ function CommentBox() {
             type="submit"
             variant="contained"
             component="button"
-            disabled={!watch("comment")}
+            disabled={!watch("comment") || isLoading}
             sx={{
               alignSelf: "flex-end",
               width: "fit-content",
