@@ -75,7 +75,7 @@ exports.updateComment = async (req, res) => {
     const matchUser = await comment.matchUser(req.user.id);
     if (!matchUser) {
       return res.status(400).json({
-        message: "You can only delete your comment",
+        message: "You can only update your comment",
         success: false,
       });
     }
