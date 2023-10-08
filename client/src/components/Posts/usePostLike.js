@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updatePostUsingId as updatePostApi } from "../../services/apiPost";
+import { likePost as likePostApi } from "../../services/apiPost";
 import toast from "react-hot-toast";
 
-export function usePostEdit(postId) {
+export function usePostLike(postId) {
   const queryClient = useQueryClient();
-  const { mutate: updatePost, isLoading: isUpdating } = useMutation({
-    mutationFn: updatePostApi,
+  const { isLoading, mutate: likePost } = useMutation({
+    mutationFn: likePostApi,
     onSuccess: (data) => {
       toast.success(data.message);
       // queryClient.invalidateQueries({ active: true });
@@ -16,5 +16,5 @@ export function usePostEdit(postId) {
     },
   });
 
-  return { updatePost, isUpdating };
+  return { likePost, isLoading };
 }

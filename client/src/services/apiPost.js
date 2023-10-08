@@ -93,3 +93,44 @@ export async function deletePostUsingId(postId) {
     throw new Error(error.response.data.message || "Error while deleting post");
   }
 }
+
+export async function likePost({ postId }) {
+  try {
+    const { data } = await axios.patch(
+      `http://localhost:3001/api/v1/post/like/${postId}`,
+      {
+        data: undefined,
+      },
+      {
+        headers: {
+          Token: localStorage.getItem("token") || "",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(error.response.data.message || "Error while adding like");
+  }
+}
+
+export async function disLikePost({ postId }) {
+  try {
+    const { data } = await axios.patch(
+      `http://localhost:3001/api/v1/post/dislike/${postId}`,
+      {
+        data: undefined,
+      },
+      {
+        headers: {
+          Token: localStorage.getItem("token") || "",
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.response.data.message || "Error while removing like");
+  }
+}

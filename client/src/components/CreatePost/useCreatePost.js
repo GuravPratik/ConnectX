@@ -12,7 +12,7 @@ export function useCreatePost() {
     onSuccess: (data) => {
       toast.success(data.message);
       queryClient.invalidateQueries({
-        queryKey: ["Post", "Comment"],
+        queryKey: ["Post", "Comment", "user", "userPosts"],
       });
       navigate(`/posts/${data.post._id}`);
     },

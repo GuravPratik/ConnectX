@@ -8,6 +8,7 @@ export function useProfileUpdate() {
     onSuccess: (data) => {
       toast.success("User account successfully updated");
       queryClient.setQueryData(["currentUser"], data.updatedUser);
+      queryClient.invalidateQueries(["user"]);
     },
     onError: (error) => {
       toast.error(error.message);

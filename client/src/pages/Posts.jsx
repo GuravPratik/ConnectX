@@ -27,6 +27,8 @@ import { useUser } from "../components/Auth/useUser";
 import { usePostById } from "../components/Posts/usePost";
 import { useCommentById } from "../components/Comments/useComment";
 import { usePostEdit } from "../components/Posts/usePostEdit";
+import { usePostLike } from "../components/Posts/usePostLike";
+import { usePostDislike } from "../components/Posts/usePostDislike";
 
 function Posts() {
   const { postId } = useParams();
@@ -34,7 +36,10 @@ function Posts() {
   const { data: currentUser } = useUser();
   const { isLoading, postData, isError, error } = usePostById(postId);
 
-  const { updatePost, isUpdating } = usePostEdit();
+  const { updatePost, isUpdating } = usePostEdit(postId);
+
+  const { likePost, isLoading: isAddingLike } = usePostLike(postId);
+  const { disLikePost, isLoading: isRemovingLike } = usePostDislike(postId);
 
   const {
     isLoading: isCommentsLoading,
@@ -56,6 +61,14 @@ function Posts() {
   function updatePostCaption(data) {
     updatePost({ postId: postData._id, caption: data });
     setIsPostEdit(false);
+  }
+
+  function handleLikeDislike() {
+    if (isLike) {
+      disLikePost({ postId });
+    } else {
+      likePost({ postId });
+    }
   }
 
   if (isLoading) {
@@ -163,8 +176,10 @@ function Posts() {
             <CardActions disableSpacing>
               <IconButton
                 aria-label="Like"
+                disabled={isAddingLike || isRemovingLike}
                 onClick={() => {
                   setIsLike((prevState) => !prevState);
+                  handleLikeDislike();
                 }}
               >
                 {isLike ? (
