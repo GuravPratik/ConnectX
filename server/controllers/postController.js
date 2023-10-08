@@ -1,5 +1,6 @@
 const Post = require("../model/post");
 const User = require("../model/user");
+const Comment = require("../model/comment");
 const cloudinary = require("cloudinary").v2;
 
 exports.getPost = async (req, res) => {
@@ -138,7 +139,7 @@ exports.deletePost = async (req, res) => {
 
     const { id } = post.imageInfo;
     await cloudinary.uploader.destroy(id);
-
+    await Comment.deleteMany({ postId });
     await Post.findByIdAndDelete(postId);
     res.status(200).json({
       message: "Post is deleted successfully",
