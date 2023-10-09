@@ -7,7 +7,7 @@ function SearchBox() {
   const [userName, setUserName] = useState("");
   function setSearchQuery(value) {
     searchParams.set("userName", value);
-    setSearchParams(searchParams);
+    setSearchParams(searchParams.toString());
   }
 
   return (

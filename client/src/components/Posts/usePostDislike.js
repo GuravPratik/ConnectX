@@ -8,7 +8,7 @@ export function usePostDislike(postId) {
     mutationFn: disLikePostApi,
     onSuccess: (data) => {
       toast.success(data.message);
-      queryClient.invalidateQueries({ stale: true });
+      queryClient.invalidateQueries({ active: true });
       queryClient.invalidateQueries(["Post"], postId);
     },
     onError: (error) => {

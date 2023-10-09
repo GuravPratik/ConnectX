@@ -1,4 +1,10 @@
-import { Box, Container, Divider } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Divider,
+  Typography,
+} from "@mui/material";
 import UserPost from "../components/User/UserPost";
 import UserDetails from "../components/User/UserDetails";
 import { ScrollRestoration } from "react-router-dom";
@@ -13,14 +19,6 @@ function Profile() {
     data: userPosts,
   } = useUserPost();
 
-  /**
-   *
-   * TODO:
-   *    1) add spinner instead of saying only loading
-   *    2) get all user post also and send the all posts to the userPost component instead of sending user id
-   *    3) also send number of post count to userDetails component it requires it to display total count
-   *
-   */
   if (isLoading) {
     return (
       <Box
@@ -32,7 +30,7 @@ function Profile() {
           height: "100vh",
         }}
       >
-        Loading...
+        <CircularProgress />
       </Box>
     );
   }
@@ -48,7 +46,9 @@ function Profile() {
           height: "100vh",
         }}
       >
-        {error.message}
+        <Typography variant="h6" component="h2">
+          {error.message}
+        </Typography>
       </Box>
     );
   }

@@ -1,9 +1,10 @@
 import axios from "axios";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export async function signUp({ userName, fullName, email, password }) {
   try {
     const { data } = await axios.post(
-      "http://localhost:3001/api/v1/signup",
+      `${serverUrl}/signup`,
       {
         userName,
         fullName,
@@ -27,7 +28,7 @@ export async function signUp({ userName, fullName, email, password }) {
 export async function login({ userName, password }) {
   try {
     const { data } = await axios.post(
-      "http://localhost:3001/api/v1/login",
+      `${serverUrl}/login`,
       {
         userName,
         password,
@@ -46,7 +47,7 @@ export async function login({ userName, password }) {
 
 export async function getCurrentUser() {
   try {
-    const { data } = await axios.get("http://localhost:3001/api/v1/user", {
+    const { data } = await axios.get(`${serverUrl}/user`, {
       headers: {
         Token: localStorage.getItem("token") || "",
       },
@@ -59,7 +60,7 @@ export async function getCurrentUser() {
 
 export async function logout() {
   try {
-    const { data } = await axios.get("http://localhost:3001/api/v1/logout");
+    const { data } = await axios.get(`${serverUrl}/logout`);
     return data;
   } catch (error) {
     console.log(error);
@@ -83,7 +84,7 @@ export async function updateUserDetails({ avatar, bio, fullName }) {
     }
 
     const { data } = await axios.patch(
-      "http://localhost:3001/api/v1/updateProfile",
+      `${serverUrl}/updateProfile`,
       {
         avatar: updateData.avatar,
         bio: updateData.bio,
@@ -108,7 +109,7 @@ export async function updateUserDetails({ avatar, bio, fullName }) {
 export async function updateLoggedUserPassword({ oldPassword, newPassword }) {
   try {
     const { data } = await axios.patch(
-      `http://localhost:3001/api/v1/password/update`,
+      `${serverUrl}/password/update`,
       {
         oldPassword,
         newPassword,

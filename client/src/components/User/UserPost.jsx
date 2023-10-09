@@ -1,11 +1,17 @@
-import { Box, ImageList, ImageListItem, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  ImageList,
+  ImageListItem,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 function UserPost({ userPosts, isLoading, isPostError }) {
   if (isLoading) {
     return (
       <Box>
-        <Typography>Loading...</Typography>
+        <CircularProgress />
       </Box>
     );
   }

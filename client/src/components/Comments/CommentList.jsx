@@ -1,4 +1,4 @@
-import { Box, List, Typography } from "@mui/material";
+import { Box, CircularProgress, List, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import CommentCard from "./CommentCard";
 import { useCommentById } from "./useComment";
@@ -29,7 +29,7 @@ function CommentList() {
           padding: "10px",
         }}
       >
-        Loading...
+        <CircularProgress />
       </Box>
     );
   }

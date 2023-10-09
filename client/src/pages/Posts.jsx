@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  CircularProgress,
   Container,
   IconButton,
   Typography,
@@ -82,7 +83,7 @@ function Posts() {
           height: "100vh",
         }}
       >
-        Loading...
+        <CircularProgress />
       </Box>
     );
   }

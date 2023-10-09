@@ -1,15 +1,12 @@
 import axios from "axios";
-
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 export async function fetchUserDetails(userId) {
   try {
-    const { data } = await axios.get(
-      `http://localhost:3001/api/v1/user/details/${userId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const { data } = await axios.get(`${serverUrl}/user/details/${userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return data.user;
   } catch (error) {
     throw new Error(error.response.data.message);
@@ -18,14 +15,11 @@ export async function fetchUserDetails(userId) {
 
 export async function fetchUserPosts(userId, token) {
   try {
-    const { data } = await axios.get(
-      `http://localhost:3001/api/v1/user/posts/${userId}`,
-      {
-        headers: {
-          Token: token,
-        },
-      }
-    );
+    const { data } = await axios.get(`${serverUrl}/user/posts/${userId}`, {
+      headers: {
+        Token: token,
+      },
+    });
     return data.posts;
   } catch (error) {
     console.log(error);
@@ -35,9 +29,7 @@ export async function fetchUserPosts(userId, token) {
 
 export async function getRandomUsers() {
   try {
-    const { data } = await axios.get(
-      "http://localhost:3001/api/v1/user/getRandom"
-    );
+    const { data } = await axios.get(`${serverUrl}/user/getRandom`);
 
     return data.randomUsers;
   } catch (error) {
@@ -48,7 +40,7 @@ export async function getRandomUsers() {
 export async function followUser({ followUserId }) {
   try {
     const { data } = await axios.patch(
-      `http://localhost:3001/api/v1/follow`,
+      `${serverUrl}/follow`,
       {
         followUserId,
       },
@@ -67,7 +59,7 @@ export async function followUser({ followUserId }) {
 export async function unFollowUser({ unFollowUserId }) {
   try {
     const { data } = await axios.patch(
-      `http://localhost:3001/api/v1/unfollow`,
+      `${serverUrl}/unfollow`,
       {
         unFollowUserId,
       },

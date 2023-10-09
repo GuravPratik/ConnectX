@@ -1,8 +1,8 @@
 import axios from "axios";
-
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 export async function fetchAllPosts() {
   try {
-    const { data } = await axios.get(`http://localhost:3001/api/v1/posts`, {
+    const { data } = await axios.get(`${serverUrl}/posts`, {
       headers: {
         Token: localStorage.getItem("token") || "",
       },
@@ -18,14 +18,11 @@ export async function fetchAllPosts() {
 
 export async function fetchPostUsingId(postId) {
   try {
-    const { data } = await axios.get(
-      `http://localhost:3001/api/v1/post/${postId}`,
-      {
-        headers: {
-          Token: localStorage.getItem("token") || "",
-        },
-      }
-    );
+    const { data } = await axios.get(`${serverUrl}/post/${postId}`, {
+      headers: {
+        Token: localStorage.getItem("token") || "",
+      },
+    });
 
     return data.post;
   } catch (error) {
@@ -38,7 +35,7 @@ export async function fetchPostUsingId(postId) {
 export async function createPost({ postImage, caption }) {
   try {
     const { data } = await axios.post(
-      `http://localhost:3001/api/v1/post`,
+      `${serverUrl}/post`,
       {
         postImage,
         caption,
@@ -60,7 +57,7 @@ export async function createPost({ postImage, caption }) {
 export async function updatePostUsingId({ postId, caption }) {
   try {
     const { data } = await axios.patch(
-      `http://localhost:3001/api/v1/post/${postId}`,
+      `${serverUrl}/post/${postId}`,
       {
         caption: caption,
       },
@@ -79,14 +76,11 @@ export async function updatePostUsingId({ postId, caption }) {
 
 export async function deletePostUsingId(postId) {
   try {
-    const { data } = await axios.delete(
-      `http://localhost:3001/api/v1/post/${postId}`,
-      {
-        headers: {
-          Token: localStorage.getItem("token") || "",
-        },
-      }
-    );
+    const { data } = await axios.delete(`${serverUrl}/post/${postId}`, {
+      headers: {
+        Token: localStorage.getItem("token") || "",
+      },
+    });
 
     return data;
   } catch (error) {
@@ -97,7 +91,7 @@ export async function deletePostUsingId(postId) {
 export async function likePost({ postId }) {
   try {
     const { data } = await axios.patch(
-      `http://localhost:3001/api/v1/post/like/${postId}`,
+      `${serverUrl}/post/like/${postId}`,
       {
         data: undefined,
       },
@@ -117,7 +111,7 @@ export async function likePost({ postId }) {
 export async function disLikePost({ postId }) {
   try {
     const { data } = await axios.patch(
-      `http://localhost:3001/api/v1/post/dislike/${postId}`,
+      `${serverUrl}/post/dislike/${postId}`,
       {
         data: undefined,
       },

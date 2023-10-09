@@ -1,15 +1,13 @@
 import axios from "axios";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export async function fetchPostComment(postId) {
   try {
-    const { data } = await axios.get(
-      `http://localhost:3001/api/v1/${postId}/comments`,
-      {
-        headers: {
-          Token: localStorage.getItem("token") || "",
-        },
-      }
-    );
+    const { data } = await axios.get(`${serverUrl}/${postId}/comments`, {
+      headers: {
+        Token: localStorage.getItem("token") || "",
+      },
+    });
 
     return data.comment;
   } catch (error) {
@@ -22,7 +20,7 @@ export async function fetchPostComment(postId) {
 export async function addComment({ postId, content }) {
   try {
     const { data } = await axios.post(
-      `http://localhost:3001/api/v1/${postId}/comments`,
+      `${serverUrl}/${postId}/comments`,
       {
         content,
       },
@@ -43,7 +41,7 @@ export async function addComment({ postId, content }) {
 export async function editComment({ commentId, content }) {
   try {
     const { data } = await axios.patch(
-      `http://localhost:3001/api/v1/comments/${commentId}`,
+      `${serverUrl}/comments/${commentId}`,
       {
         content,
       },

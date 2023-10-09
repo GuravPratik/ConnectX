@@ -5,7 +5,7 @@ export function useFeed() {
   const { isLoading, data, isError, error } = useQuery({
     queryKey: ["Posts"],
     queryFn: fetchAllPosts,
-    staleTime: 1000,
+    staleTime: 2 * 60 * 1000,
   });
 
   return { isLoading, data, isError, error };
