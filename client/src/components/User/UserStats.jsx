@@ -16,7 +16,7 @@ function UserStats({
         <Typography variant="subtitle2" component="span">
           {numberOfPost + " "}
         </Typography>
-        posts
+        {numberOfPost < 2 ? "post" : "posts"}
       </Typography>
       <Typography component="p">
         <Typography variant="subtitle2" component="span">

@@ -189,14 +189,16 @@ function Posts() {
                 )}
               </IconButton>
               <Typography sx={{ marginRight: "5px" }}>
-                {postData.likesId.length} Likes
+                {postData.likesId.length}{" "}
+                {postData.likesId.length < 2 ? `Like` : `Likes`}
               </Typography>
               <IconButton aria-label="share">
                 <CommentIcon />
               </IconButton>
               {!isCommentsLoading && !isCommentError && (
                 <Typography sx={{ marginRight: "5px" }}>
-                  {comments.length} comments
+                  {comments.length}{" "}
+                  {comments.length < 2 ? "comment" : "comments"}
                 </Typography>
               )}
             </CardActions>

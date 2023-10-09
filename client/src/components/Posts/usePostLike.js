@@ -8,7 +8,7 @@ export function usePostLike(postId) {
     mutationFn: likePostApi,
     onSuccess: (data) => {
       toast.success(data.message);
-      // queryClient.invalidateQueries({ active: true });
+      queryClient.invalidateQueries({ active: true });
       queryClient.invalidateQueries(["Post"], postId);
     },
     onError: (error) => {

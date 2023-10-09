@@ -318,11 +318,19 @@ exports.follow = async (req, res) => {
     const userId = req.user.id;
     // get the id of the user to follow
     const { followUserId } = req.body;
+    if (!followUserId) {
+      return res.status(400).json({
+        error: "User id is required to follow user",
+        success: false,
+      });
+    }
 
     // get username fullName and id of the follow user
     const followUser = await User.findById(followUserId).select(
       "id userName fullName"
     );
+
+    console.log(followUser);
 
     const followingObj = {
       userId: followUserId,
@@ -378,6 +386,12 @@ exports.unfollow = async (req, res) => {
     const userId = req.user.id;
     // get the id of the user to follow
     const { unFollowUserId } = req.body;
+    if (!unFollowUserId) {
+      return res.status(400).json({
+        error: "User id is required to unfollow user",
+        success: false,
+      });
+    }
 
     // update current logged in user following field
     await User.findByIdAndUpdate(
@@ -390,7 +404,7 @@ exports.unfollow = async (req, res) => {
       }
     );
 
-    // update the follow user follwers field
+    // update the unfollow user follwers field
     await User.findByIdAndUpdate(
       unFollowUserId,
       {

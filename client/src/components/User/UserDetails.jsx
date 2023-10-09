@@ -7,6 +7,8 @@ import UserStats from "./UserStats";
 import UserAvatar from "./UserAvatar";
 import { useUser } from "../Auth/useUser";
 import { getJoinedDate } from "../../utils/helper";
+import { useFollow } from "./useFollow";
+import { useUnfollow } from "./useUnfollow";
 
 const StyledBox = styled(Box)(() => ({
   display: "flex",
@@ -50,12 +52,27 @@ const DetailBox = styled(Box)(() => ({
 function UserDetails({ user, totalPosts }) {
   // get current user
   const { data: currentUser } = useUser();
-  const currentUserId = currentUser._id;
+  const navigate = useNavigate();
   const { userId } = useParams();
+
+  const { isLoading: isAddingFollow, followUser } = useFollow();
+  const { isLoading: isUnfollowing, unFollowUser } = useUnfollow();
+  const currentUserId = currentUser._id;
 
   const isOwner = currentUserId === userId;
 
-  const navigate = useNavigate();
+  const isFollow = user.followers.some(
+    (follow) => follow.userId === currentUserId
+  );
+
+  function handleOnFollowClick() {
+    followUser({ followUserId: userId });
+  }
+
+  function handleOnUnFollowClick() {
+    unFollowUser({ unFollowUserId: userId });
+  }
+
   function handleOnEditClick() {
     navigate("/setting");
   }
@@ -84,8 +101,22 @@ function UserDetails({ user, totalPosts }) {
             >
               Edit
             </Button>
+          ) : isFollow ? (
+            <Button
+              disabled={isUnfollowing}
+              variant="contained"
+              size="small"
+              onClick={handleOnUnFollowClick}
+            >
+              UnFollow
+            </Button>
           ) : (
-            <Button variant="contained" size="small">
+            <Button
+              disabled={isAddingFollow}
+              variant="contained"
+              size="small"
+              onClick={handleOnFollowClick}
+            >
               Follow
             </Button>
           )}

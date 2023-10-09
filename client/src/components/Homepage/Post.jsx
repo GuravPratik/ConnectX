@@ -11,28 +11,39 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { formatDateFromNow } from "../../utils/helper";
 import { useUser } from "../Auth/useUser";
+import { usePostLike } from "../Posts/usePostLike";
+import { usePostDislike } from "../Posts/usePostDislike";
 
 export default function Post({ post }) {
-  /**
-   * TODO:
-   *  1) Allow user to like or dislike post
-   *
-   */
-
   const { data: currentUser } = useUser();
 
-  const userId = currentUser?._id;
+  // const userId = currentUser?._id;
 
-  const [isLike, setIsLike] = useState(
-    post.likesId.some((like) => like.userId === userId)
-  );
+  const { likePost, isLoading: isAddingLike } = usePostLike(post._id);
+  const { disLikePost, isLoading: isRemovingLike } = usePostDislike(post._id);
+
+  const [isLike, setIsLike] = useState(false);
+
+  useEffect(() => {
+    setIsLike(post.likesId.some((like) => like.userId === currentUser._id));
+  }, [currentUser._id, isAddingLike, post, isRemovingLike]);
+
   const navigate = useNavigate();
+
+  function handleLikeDislike() {
+    if (isLike) {
+      disLikePost({ postId: post._id });
+    } else {
+      likePost({ postId: post._id });
+    }
+  }
+
   function handlePostClick() {
     navigate(`/posts/${post._id}`);
   }
@@ -75,9 +86,11 @@ export default function Post({ post }) {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton
-          aria-label="Like"
+          disabled={isAddingLike || isRemovingLike}
+          aria-label="aria-label-Like"
           onClick={() => {
             setIsLike((prevState) => !prevState);
+            handleLikeDislike();
           }}
         >
           {isLike ? (
@@ -87,7 +100,7 @@ export default function Post({ post }) {
           )}
         </IconButton>
         <Typography sx={{ marginRight: "5px" }}>
-          {post.likesId.length} Likes
+          {post.likesId.length} {post.likesId.length < 2 ? `Like` : `Likes`}
         </Typography>
         <IconButton
           aria-label="share"

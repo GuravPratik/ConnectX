@@ -5,10 +5,9 @@ const cloudinary = require("cloudinary").v2;
 
 exports.getPost = async (req, res) => {
   try {
-    const posts = await Post.find().populate(
-      "userId",
-      "id userName fullName profilePic"
-    );
+    const posts = await Post.find()
+      .populate("userId", "id userName fullName profilePic")
+      .sort({ createdAt: -1 });
     res.json({
       message: "All posts are fetch",
       posts,
