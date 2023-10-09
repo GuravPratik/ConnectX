@@ -124,7 +124,6 @@ export async function disLikePost({ postId }) {
 
     return data;
   } catch (error) {
-    console.log(error);
     throw new Error(error.response.data.message || "Error while removing like");
   }
 }

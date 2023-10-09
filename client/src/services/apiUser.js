@@ -22,7 +22,6 @@ export async function fetchUserPosts(userId, token) {
     });
     return data.posts;
   } catch (error) {
-    console.log(error);
     throw new Error(error.response.data.message);
   }
 }

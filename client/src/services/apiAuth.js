@@ -17,10 +17,9 @@ export async function signUp({ userName, fullName, email, password }) {
         },
       }
     );
-    console.log(data);
+
     return data;
   } catch (err) {
-    console.log(err);
     throw new Error(err.response.data.error);
   }
 }
@@ -63,7 +62,6 @@ export async function logout() {
     const { data } = await axios.get(`${serverUrl}/logout`);
     return data;
   } catch (error) {
-    console.log(error);
     throw new Error(error.response.data.message);
   }
 }
