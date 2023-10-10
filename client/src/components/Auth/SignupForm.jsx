@@ -61,7 +61,13 @@ export default function SignUpForm() {
                   id="Username"
                   label="Username"
                   autoFocus
-                  {...register("userName", { required: true })}
+                  {...register("userName", {
+                    required: true,
+                    maxLength: {
+                      value: 10,
+                      message: "Username should be less than 10 characters",
+                    },
+                  })}
                 />
                 {errors.userName && (
                   <Box>

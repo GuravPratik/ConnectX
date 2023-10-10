@@ -16,6 +16,8 @@ import Signup from "./pages/Signup";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/password/reset/:token",
+    element: <ResetPassword />,
   },
   {
     path: "*",

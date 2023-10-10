@@ -129,3 +129,34 @@ export async function updateLoggedUserPassword({ oldPassword, newPassword }) {
     );
   }
 }
+
+export async function getResetPasswordLink({ email }) {
+  try {
+    const { data } = await axios.post(`${serverUrl}/forgotPassword`, {
+      email,
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error(error.response.data.error || "Error while sending email");
+  }
+}
+
+export async function resetPasswordUsingEmail({
+  token,
+  password,
+  confirmPassword,
+}) {
+  try {
+    const { data } = await axios.post(`${serverUrl}/password/reset/${token}`, {
+      password,
+      confirmPassword,
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.error || "Error while reseting password"
+    );
+  }
+}
