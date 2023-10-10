@@ -137,11 +137,6 @@ exports.forgotPassword = async (req, res) => {
   await user.save({ validateBeforeSave: false });
 
   // creating a url and message
-
-  // const url = `${req.protocol}://${req.get(
-  //   "host"
-  // )}/api/v1/password/reset/${forgotToken}`;
-
   const url = `http://localhost:5173/password/reset/${forgotToken}`;
 
   const message = `Copy paste this link in your URL and hit enter \n\n ${url}`;
@@ -207,7 +202,7 @@ exports.resetPassword = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Password is successfully reset",
+      message: "Password is successfully reset ! U can login with new password",
     });
   } catch (error) {
     console.log(error);
